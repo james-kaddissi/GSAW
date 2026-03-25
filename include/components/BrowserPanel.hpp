@@ -7,6 +7,7 @@
 #include <audio/plugins/VST3HostPlatform.hpp>
 
 #include "components/BrowserItem.hpp"
+#include "audio/AudioEngine.hpp"
 
 #include <string>
 #include <vector>
@@ -53,6 +54,7 @@ public:
 
     static std::shared_ptr<BrowserPanel> create(
         PlatformWindowHandle owner,
+        AudioEngine* engine,
         ProbeFn probeFn,
         PickFileFn pickFileFn = nullptr,
         BrowserPanelConfig cfg = {});
@@ -67,6 +69,8 @@ public:
     std::shared_ptr<gs::ui::core::UIElement> widget() const { return m_root; }
 
     void rebuild();
+
+    void handleDrop(gs::ui::core::DragPayload payload);
 
 private:
     BrowserPanel() = default;
@@ -87,4 +91,6 @@ private:
 
     std::shared_ptr<gs::ui::widgets::UIStackPanel> m_root;
     std::shared_ptr<gs::ui::widgets::UIScrollArea> m_scrollBody;
+
+    AudioEngine* m_engine = nullptr;
 };

@@ -29,7 +29,6 @@ using gs::ui::core::DragPayload;
 
 using namespace gs::audio;
 
-
 class GSAWAppLayer final : public gs::core::Layer::GLayer {
 public:
     explicit GSAWAppLayer(gs::ui::core::UILayer& uiLayer, AudioLayer& audioLayer)
@@ -48,31 +47,6 @@ public:
         if (m_audio.getVST3Host()) m_audio.getVST3Host()->OpenAllPluginEditors(m_owner);
     }
 
-    void onBrowserDrop(DragPayload payload) {
-        auto* engine = m_audio.getEngine();
-        if (!engine) return;
-
-        switch (payload.kind) {
-            case DragPayload::Kind::VST3Plugin: {
-                std::wstring wpath;
-                wpath.reserve(payload.path.size());
-                for (char c : payload.path)
-                    wpath.push_back(static_cast<wchar_t>(static_cast<unsigned char>(c)));
-
-                engine->loadVST3PluginSmart(wpath.c_str());
-                break;
-            }
-            case DragPayload::Kind::Sample:
-                break;
-            case DragPayload::Kind::BuiltinGenerator:
-                break;
-            case DragPayload::Kind::BuiltinEffect:
-                break;
-            default:
-                break;
-        }
-    }
-
     void onAttach(gs::core::Application::AppContext& ctx) override {
         m_owner = ctx.window.getNativeHandle();
         auto& window = ctx.window;
@@ -88,10 +62,11 @@ public:
             return engine->probeVST3Plugin(path, outName, outIsInstrument);
         };
 
-        m_browserPanel = BrowserPanel::create(m_owner, std::move(probeFn));
+        m_browserPanel = BrowserPanel::create(m_owner, m_audio.getEngine(), std::move(probeFn));
 
-        m_uiLayer.getLayoutRoot().setOnDrop([this](DragPayload p) { onBrowserDrop(std::move(p)); });
-
+        m_uiLayer.getLayoutRoot().setOnDrop([this](DragPayload p) {
+            m_browserPanel->handleDrop(std::move(p));
+        });
         fpsText = ui::Text("FPS: --").size(14).color({0.7f, 0.7f, 0.7f, 1});
         statusText = ui::Text("Active")
             .size(14)
@@ -147,6 +122,14 @@ public:
         buttonRow.add(btnMin).add(btnMax).add(btnClose);
         titlebar.add(leftside).add(buttonRow);
 
+        auto channelRackWidget = m_channelRackView->widget();
+        channelRackWidget->flexGrow = 1.0f;
+        channelRackWidget->heightMode = gs::ui::core::UISizeMode::Flex;
+
+        auto mixerWidget = m_mixerView->widget();
+        mixerWidget->flexGrow = 1.0f;
+        mixerWidget->heightMode = gs::ui::core::UISizeMode::Flex;
+
         auto rightColumn = ui::VStack().spacing(4).pad(0)
             .add(ui::HStack().spacing(8).height(32)
                 .add(ui::Button("Bypass").size(12).width(80).height(28)
@@ -156,14 +139,8 @@ public:
                     .colors({0.5f,0.3f,0.5f,1}, {0.6f,0.4f,0.6f,1}, {0.4f,0.2f,0.4f,1})
                     .onClick(this, &GSAWAppLayer::onOpenAllEditors)))
 
-            .add(ui::Text("Channel Rack").size(13).color({0.6f, 0.8f, 1.0f, 1}).height(18))
-            .add(m_channelRackView->widget())
-
-            .add(ui::Text("Mixer").size(13).color({0.6f, 0.8f, 1.0f, 1}).height(18))
-            .add(m_mixerView->widget())
-
-            // .add(ui::Text("Hardware Input").size(11).color({0.4f, 0.4f, 0.4f, 1}).height(16))
-            // .add(ui::Circle(20.0f).strokeColor({1,1,1,1}).strokeThickness(2.0f));
+            .add(channelRackWidget)
+            .add(mixerWidget)
 
             .build();
         rightColumn->crossAxisAlignment = gs::ui::core::UICrossAxisAlignment::Stretch;
@@ -236,7 +213,7 @@ private:
             "Synth", 2, {gs::audio::InputSource::Kind::None, 0, 0},
             gs::audio::kMasterBusId);
 
-        auto synth = std::make_unique<SubSynth>(16);
+        auto synth = std::make_unique<SubtractiveSynth>(16);
         ChannelId chId = rack->addChannel("Lead", std::move(synth), synthTrackId);
 
         PatternId patId = rack->createPattern("Arpeggio", 2);

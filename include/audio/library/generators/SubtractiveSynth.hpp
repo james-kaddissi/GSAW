@@ -6,9 +6,9 @@ using gs::audio::Voice;
 using gs::audio::GeneratorBase;
 using PC = gs::audio::ProcessContext;
 
-class SubSynth final : public GeneratorBase {
+class SubtractiveSynth final : public GeneratorBase {
 public:
-    explicit SubSynth(int voices = 16);
+    explicit SubtractiveSynth(int voices = 16);
 
     const char* name() const override;
     bool hasTail() const override;

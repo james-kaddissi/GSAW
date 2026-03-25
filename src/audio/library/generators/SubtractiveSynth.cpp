@@ -9,7 +9,7 @@
 #define M_PI 3.141592653589793238462643383279502884
 #endif
 
-SubSynth::SubSynth(int voices)
+SubtractiveSynth::SubtractiveSynth(int voices)
     : GeneratorBase(voices) {
     addParam({"waveform", "Waveform", 0.0f, 3.0f, 1.0f, 1.0f});
     addParam({"attack", "Attack (ms)", 1.0f, 5000.0f, 10.0f});
@@ -23,20 +23,20 @@ SubSynth::SubSynth(int voices)
     addParam({"gain", "Gain (dB)", -30.0f, 6.0f, -6.0f});
 }
 
-const char* SubSynth::name() const {
-    return "SubSynth";
+const char* SubtractiveSynth::name() const {
+    return "SubtractiveSynth";
 }
 
-bool SubSynth::hasTail() const {
+bool SubtractiveSynth::hasTail() const {
     return true;
 }
 
-void SubSynth::prepare(const PC& ctx) {
+void SubtractiveSynth::prepare(const PC& ctx) {
     m_sr = ctx.sampleRate;
     initSmoothing(m_sr, 5.0f);
 }
 
-void SubSynth::reset() {
+void SubtractiveSynth::reset() {
     for (auto& v : m_voices) {
         v.active = false;
         v.releasing = false;
@@ -46,7 +46,7 @@ void SubSynth::reset() {
     }
 }
 
-void SubSynth::onNoteOn(Voice& v, const PC&) {
+void SubtractiveSynth::onNoteOn(Voice& v, const PC&) {
     float freq = midiNoteToHz(v.note);
     v.userData[0] = 0.0f;
     v.userData[1] = 0.0f;
@@ -58,12 +58,12 @@ void SubSynth::onNoteOn(Voice& v, const PC&) {
     v.releasing = false;
 }
 
-void SubSynth::onNoteOff(Voice& v, const PC&) {
+void SubtractiveSynth::onNoteOff(Voice& v, const PC&) {
     v.releasing = true;
     v.userData[2] = 3.0f;
 }
 
-float SubSynth::renderVoice(Voice& v, const PC&) {
+float SubtractiveSynth::renderVoice(Voice& v, const PC&) {
     float waveformIdx = m_params[0].get();
     float cutoff = paramSmoothed(5);
     float resonance = paramSmoothed(6);
@@ -95,7 +95,7 @@ float SubSynth::renderVoice(Voice& v, const PC&) {
     return filtered * env * v.userData[5] * gainLin;
 }
 
-bool SubSynth::advanceVoice(Voice& v, const PC&) {
+bool SubtractiveSynth::advanceVoice(Voice& v, const PC&) {
     float attack = m_params[1].get();
     float decay = m_params[2].get();
     float sustain = m_params[3].get();
@@ -145,11 +145,11 @@ bool SubSynth::advanceVoice(Voice& v, const PC&) {
     return true;
 }
 
-float SubSynth::midiNoteToHz(int note) {
+float SubtractiveSynth::midiNoteToHz(int note) {
     return 440.0f * std::pow(2.0f, (note - 69) / 12.0f);
 }
 
-float SubSynth::oscillator(double phase, int waveform) {
+float SubtractiveSynth::oscillator(double phase, int waveform) {
     float p = static_cast<float>(phase);
     switch (waveform) {
         case 0:
@@ -165,7 +165,7 @@ float SubSynth::oscillator(double phase, int waveform) {
     }
 }
 
-float SubSynth::polyBLEP(float t, float dt) {
+float SubtractiveSynth::polyBLEP(float t, float dt) {
     if (t < dt) {
         t /= dt;
         return t + t - t * t - 1.0f;
@@ -177,20 +177,20 @@ float SubSynth::polyBLEP(float t, float dt) {
     return 0.0f;
 }
 
-float SubSynth::sawBLEP(float phase) {
+float SubtractiveSynth::sawBLEP(float phase) {
     float val = 2.0f * phase - 1.0f;
     val -= polyBLEP(phase);
     return val;
 }
 
-float SubSynth::squareBLEP(float phase) {
+float SubtractiveSynth::squareBLEP(float phase) {
     float val = phase < 0.5f ? 1.0f : -1.0f;
     val += polyBLEP(phase);
     val -= polyBLEP(std::fmod(phase + 0.5f, 1.0f));
     return val;
 }
 
-float SubSynth::svfLowpass(float input, float cutoffHz, float res, float& ic1eq, float& ic2eq) const {
+float SubtractiveSynth::svfLowpass(float input, float cutoffHz, float res, float& ic1eq, float& ic2eq) const {
     float g = std::tan(static_cast<float>(M_PI) * cutoffHz / static_cast<float>(m_sr));
     float k = 2.0f - 2.0f * res;
     k = std::max(k, 0.01f);

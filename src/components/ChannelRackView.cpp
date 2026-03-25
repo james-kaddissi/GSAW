@@ -92,8 +92,6 @@ void ChannelRackView::syncStates() {
 }
 
 void ChannelRackView::rebuild() {
-    namespace ui = gs::ui;
-
     m_lastChannelCount = m_rack->getChannelCount();
     m_lastFocusedId = m_rack->getFocusedChannelId();
     m_channelUi.clear();
@@ -110,7 +108,8 @@ void ChannelRackView::rebuild() {
     m_root->padding = gs::ui::core::UIThickness(m_cfg.sectionPad);
     m_root->fill = m_cfg.bg;
     m_root->widthMode = gs::ui::core::UISizeMode::Fill;
-    m_root->heightMode = gs::ui::core::UISizeMode::Auto;
+    m_root->heightMode = gs::ui::core::UISizeMode::Flex;
+    m_root->flexGrow = 1.0f;
 
     m_root->add(buildTransportBar());
 
@@ -124,8 +123,9 @@ void ChannelRackView::rebuild() {
     scroll->scrollbarThumbDrag = m_cfg.scrollThumbDrag;
     scroll->scrollSpeed = 40.0f;
     scroll->widthMode = gs::ui::core::UISizeMode::Fill;
-    scroll->heightMode = gs::ui::core::UISizeMode::Fixed;
-    scroll->preferredHeight = m_cfg.maxHeight;
+    scroll->heightMode = gs::ui::core::UISizeMode::Flex;
+    scroll->flexGrow = 1.0f;
+    scroll->preferredHeight = 0.0f; 
 
     auto channelIds = m_rack->getChannelIds();
     for (size_t i = 0; i < channelIds.size(); ++i) {
@@ -413,7 +413,7 @@ std::shared_ptr<gs::ui::core::UIElement> ChannelRackView::buildAddChannelRow() {
     ChannelRack* rack = m_rack;
     AudioEngine* engine = m_engine;
 
-    return ui::Dropdown({"SubSynth", "BagpipeSynth"})
+    return ui::Dropdown({"SubtractiveSynth", "BagpipeSynth"})
         .placeholder("+ Add Channel")
         .autoFlush()
         .noArrow()
@@ -428,8 +428,8 @@ std::shared_ptr<gs::ui::core::UIElement> ChannelRackView::buildAddChannelRow() {
 
             switch (idx) {
                 case 0: {
-                    auto gen = std::make_unique<SubSynth>(16);
-                    rack->addChannel("SubSynth", std::move(gen), outTrack);
+                    auto gen = std::make_unique<SubtractiveSynth>(16);
+                    rack->addChannel("SubtractiveSynth", std::move(gen), outTrack);
                     break;
                 }
                 case 1: {

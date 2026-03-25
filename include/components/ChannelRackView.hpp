@@ -15,7 +15,7 @@
 #include <string>
 #include <cstdint>
 
-class SubSynth;
+class SubtractiveSynth;
 class BagpipeSynth;
 
 namespace StyleStates = gs::ui::style::StyleStates;

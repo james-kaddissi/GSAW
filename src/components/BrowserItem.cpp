@@ -28,8 +28,8 @@ void BrowserItem::emit(gs::ui::core::UICanvas& canvas) {
     if (!visible) return;
 
     emitBackground(canvas);
-
-    if (m_hovered) {
+    bool hovered = hasState(gs::ui::style::StyleStates::Hovered);
+    if (hovered) {
         gs::ui::core::UINode bg{};
         bg.type = gs::ui::core::UINodeType::FilledRect;
         bg.x = arranged.x;
@@ -41,14 +41,21 @@ void BrowserItem::emit(gs::ui::core::UICanvas& canvas) {
         canvas.nodes.push_back(bg);
     }
 
-    auto color = m_hovered ? m_hoverColor : m_textColor;
+    auto color = hovered ? m_hoverColor : m_textColor;
 
-    canvas.addText(m_label, arranged.x + 4.0f, arranged.y + 2.0f, m_fontSize, color);
+    float ascent = canvas.fontAscender * m_fontSize;
+    float descent = -canvas.fontDescender * m_fontSize;
+    float textH  = ascent + descent;
+    float baselineY = arranged.y + (arranged.height - textH) * 0.5f + ascent;
+
+    canvas.addText(m_label, arranged.x + 4.0f, baselineY, m_fontSize, color);
 }
 
 bool BrowserItem::onMouseMove(float x, float y) {
-    bool wasHovered = m_hovered;
-    m_hovered = hitTest(x, y);
+    if (!hasState(gs::ui::style::StyleStates::Pressed)) {
+        if (arranged.contains(x, y)) addState(gs::ui::style::StyleStates::Hovered);
+        else removeState(gs::ui::style::StyleStates::Hovered);
+    }
 
     if (m_mouseDown && !m_dragging) {
         float dx = x - m_downX;
@@ -65,21 +72,16 @@ bool BrowserItem::onMouseMove(float x, float y) {
         return true;
     }
 
-    if (m_mouseDown) {
-        return true;
-    }
-
-    if (wasHovered != m_hovered) requestRender();
-    return m_hovered;
+    return false;
 }
 
 bool BrowserItem::onMouseDown(float x, float y) {
     if (!hitTest(x, y)) return false;
 
     m_mouseDown = true;
-    m_dragging  = false;
-    m_downX     = x;
-    m_downY     = y;
+    m_dragging = false;
+    m_downX = x;
+    m_downY = y;
 
     return true;
 }
@@ -88,7 +90,7 @@ bool BrowserItem::onMouseUp(float x, float y) {
     bool wasDragging = m_dragging;
 
     m_mouseDown = false;
-    m_dragging  = false;
+    m_dragging = false;
 
     if (wasDragging) {
         return true;

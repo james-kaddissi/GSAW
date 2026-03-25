@@ -29,15 +29,14 @@ public:
     const gs::ui::core::DragPayload& dragPayload() const;
 
 private:
-    std::string                m_label;
-    gs::ui::core::DragPayload  m_payload;
-    float                      m_fontSize;
-    gs::ui::core::UIColor      m_textColor;
-    gs::ui::core::UIColor      m_hoverColor;
+    std::string m_label;
+    gs::ui::core::DragPayload m_payload;
+    float m_fontSize;
+    gs::ui::core::UIColor m_textColor;
+    gs::ui::core::UIColor m_hoverColor;
 
-    bool  m_hovered   = false;
     bool  m_mouseDown = false;
-    bool  m_dragging  = false;
-    float m_downX     = 0.0f;
-    float m_downY     = 0.0f;
+    bool  m_dragging = false;
+    float m_downX = 0.0f;
+    float m_downY = 0.0f;
 };

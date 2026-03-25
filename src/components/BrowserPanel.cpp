@@ -1,4 +1,6 @@
 #include "components/BrowserPanel.hpp"
+#include "audio/library/generators/SubtractiveSynth.hpp"
+#include "audio/library/generators/BagpipeSynth.hpp"
 
 #include <algorithm>
 #include <filesystem>
@@ -20,12 +22,14 @@ using gs::ui::core::UIColor;
 
 std::shared_ptr<BrowserPanel> BrowserPanel::create(
     PlatformWindowHandle owner,
+    AudioEngine* engine,
     ProbeFn probeFn,
     PickFileFn pickFileFn,
     BrowserPanelConfig cfg)
 {
     auto bp = std::shared_ptr<BrowserPanel>(new BrowserPanel());
     bp->m_owner = owner;
+    bp->m_engine = engine;
     bp->m_probeFn = std::move(probeFn);
     bp->m_pickFileFn = std::move(pickFileFn);
     bp->m_cfg = cfg;
@@ -40,10 +44,60 @@ std::shared_ptr<BrowserPanel> BrowserPanel::create(
     bp->m_root->borderColor = {0.25f, 0.25f, 0.30f, 1.0f};
     bp->m_root->borderThickness = 1.0f;
 
-    bp->addBuiltinGenerator("SubSynth", "SubSynth");
+    bp->addBuiltinGenerator("SubtractiveSynth", "SubtractiveSynth");
+    bp->addBuiltinGenerator("BagpipeSynth", "BagpipeSynth");
+    bp->addBuiltinEffect("Gain/Pan", "GainPan");
+    bp->addBuiltinEffect("Distortion", "Distortion");
 
     bp->rebuild();
     return bp;
+}
+
+void BrowserPanel::handleDrop(DragPayload payload) {
+    if (!m_engine) return;
+
+    switch (payload.kind) {
+        case DragPayload::Kind::VST3Plugin: {
+            std::wstring wpath;
+            wpath.reserve(payload.path.size());
+            for (char c : payload.path)
+                wpath.push_back(static_cast<wchar_t>(static_cast<unsigned char>(c)));
+            m_engine->loadVST3PluginSmart(wpath.c_str());
+            break;
+        }
+        case DragPayload::Kind::Sample:
+            break;
+        case DragPayload::Kind::BuiltinGenerator:{
+            auto* rack = m_engine->getChannelRack();
+            if (!rack) break;
+
+            auto trackIds = m_engine->getTrackIds();
+            TrackId outTrack = trackIds.empty() ? kInvalidTrackId : trackIds.front();
+
+            if (payload.identifier == "SubtractiveSynth") {
+                auto gen = std::make_unique<SubtractiveSynth>(16);
+                rack->addChannel("SubtractiveSynth", std::move(gen), outTrack);
+            } else if (payload.identifier == "BagpipeSynth") {
+                auto gen = std::make_unique<BagpipeSynth>(16);
+                rack->addChannel("BagpipeSynth", std::move(gen), outTrack);
+            }
+            break;
+        }
+        case DragPayload::Kind::BuiltinEffect:{
+            auto trackIds = m_engine->getTrackIds();
+            if (trackIds.empty()) break;
+            TrackId targetTrack = trackIds.front();
+
+            if (payload.identifier == "GainPan") {
+                m_engine->addGainPanEffect(targetTrack);
+            } else if (payload.identifier == "Distortion") {
+                m_engine->addDistortionEffect(targetTrack);
+            }
+            break;
+        }
+        default:
+            break;
+    }
 }
 
 void BrowserPanel::addSample(const std::string& filename) {
@@ -79,10 +133,10 @@ void BrowserPanel::addVST3(const std::wstring& path) {
 
 void BrowserPanel::addBuiltinGenerator(const std::string& name, const std::string& id) {
     BrowserEntry e;
-    e.kind        = BrowserEntry::Kind::BuiltinGenerator;
+    e.kind = BrowserEntry::Kind::BuiltinGenerator;
     e.displayName = name;
-    e.typeSuffix  = "GSAW";
-    e.identifier  = id;
+    e.typeSuffix = "GSAW";
+    e.identifier = id;
     m_entries.push_back(std::move(e));
 }
 
@@ -106,8 +160,8 @@ std::string BrowserPanel::formatEntry(const BrowserEntry& e) {
 DragPayload BrowserPanel::makePayload(const BrowserEntry& e) {
     DragPayload p;
     p.displayName = e.displayName;
-    p.path        = e.path;
-    p.identifier  = e.identifier;
+    p.path = e.path;
+    p.identifier = e.identifier;
 
     switch (e.kind) {
         case BrowserEntry::Kind::Sample:
@@ -267,7 +321,7 @@ void BrowserPanel::rebuild() {
         }
     };
 
-    addSection("Samples",    samples);
-    addSection("Effects",    effects);
+    addSection("Samples", samples);
+    addSection("Effects", effects);
     addSection("Generators", generators);
 }
