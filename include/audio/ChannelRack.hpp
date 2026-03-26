@@ -2,6 +2,7 @@
 
 #include "audio/Channel.hpp"
 #include "audio/Pattern.hpp"
+#include "audio/Ids.hpp"
 
 #include <audio/core/AudioTypes.hpp>
 #include <audio/core/Track.hpp>

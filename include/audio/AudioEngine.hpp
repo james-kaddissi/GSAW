@@ -11,6 +11,7 @@
 #include <audio/plugins/VST3Host.hpp>
 
 #include "audio/ChannelRack.hpp"
+#include "audio/Ids.hpp"
 
 #include <atomic>
 #include <memory>
