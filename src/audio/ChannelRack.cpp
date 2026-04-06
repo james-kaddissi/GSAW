@@ -220,8 +220,8 @@ void ChannelRack::processBlock(const PC& ctx, const std::function<Track*(TrackId
             if (patId != kInvalidPatternId) {
                 Pattern* pat = getPattern(patId);
                 if (pat && !pat->isEmpty()) {
-                    pat->sort();
-                    pat->renderToMidi(ch->getMidiBuffer(), tickPos, tickEnd, bpm, sampleRate, frames);
+                    pat->sortAll();
+                    emitPatternToMidiForChannel(*pat, chId, ch->getMidiBuffer(), tickPos, tickEnd, bpm, sampleRate, frames);
                 }
             }
         }
@@ -285,4 +285,67 @@ EffectInfo ChannelRack::getChannelGeneratorInfo(ChannelId channelId) {
     }
 
     return {channelId, genBase->name(), genBase->getParams()};
+}
+
+void ChannelRack::emitPatternToMidiForChannel(
+    const Pattern& pat,
+    ChannelId channelId,
+    MidiBuffer& out,
+    double tickStart,
+    double tickEnd,
+    double bpm,
+    double sampleRate,
+    int blockFrames
+) {
+    if (pat.isEmpty() || pat.getLengthTicks() <= 0 || blockFrames <= 0 || sampleRate <= 0.0) {
+        return;
+    }
+
+    const double ticksPerSample = (bpm * pat.getPpqn()) / (60.0 * sampleRate);
+    if (ticksPerSample <= 0.0) {
+        return;
+    }
+
+    const double samplesPerTick = 1.0 / ticksPerSample;
+    double cursor = tickStart;
+
+    while (cursor < tickEnd) {
+        double patternPos = std::fmod(cursor, static_cast<double>(pat.getLengthTicks()));
+        if (patternPos < 0.0) {
+            patternPos += static_cast<double>(pat.getLengthTicks());
+        }
+
+        const double remaining = tickEnd - cursor;
+        const double patternRemaining = static_cast<double>(pat.getLengthTicks()) - patternPos;
+        const double span = std::min(remaining, patternRemaining);
+        const double spanEnd = patternPos + span;
+
+        for (const auto& note : pat.getNotes()) {
+            if (note.muted) {
+                continue;
+            }
+
+            if (note.targetChannelId != kInvalidChannelId && note.targetChannelId != channelId) {
+                continue;
+            }
+
+            const double noteTick = static_cast<double>(note.tick);
+            const double noteEnd = noteTick + static_cast<double>(note.duration);
+
+            if (noteTick >= patternPos && noteTick < spanEnd) {
+                const double sampleExact = (cursor - tickStart + (noteTick - patternPos)) * samplesPerTick;
+                const int sampleOffset = std::clamp(static_cast<int>(sampleExact), 0, blockFrames - 1);
+                const int velocity = std::clamp(static_cast<int>(note.velocity * 127.0f), 0, 127);
+                out.add(MidiEvent::noteOn(0, note.note, velocity, sampleOffset));
+            }
+
+            if (noteEnd >= patternPos && noteEnd < spanEnd) {
+                const double sampleExact = (cursor - tickStart + (noteEnd - patternPos)) * samplesPerTick;
+                const int sampleOffset = std::clamp(static_cast<int>(sampleExact), 0, blockFrames - 1);
+                out.add(MidiEvent::noteOff(0, note.note, sampleOffset));
+            }
+        }
+
+        cursor += span;
+    }
 }

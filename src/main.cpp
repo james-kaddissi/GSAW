@@ -4,6 +4,7 @@
 #include "audio/library/generators/SubtractiveSynth.hpp"
 #include "components/BrowserPanel.hpp"
 #include "components/MixerView.hpp"
+#include "audio/Ids.hpp"
 #include <ui/core/UILayer.hpp>
 #include <ui/UIBuilder.hpp>
 #include <ui/style/StyleState.hpp>
@@ -209,9 +210,9 @@ private:
         auto* rack = engine->getChannelRack();
         if (!rack) return;
 
-        gs::audio::TrackId synthTrackId = engine->createTrack(
+        TrackId synthTrackId = engine->createTrack(
             "Synth", 2, {gs::audio::InputSource::Kind::None, 0, 0},
-            gs::audio::kMasterBusId);
+            kMasterBusId);
 
         auto synth = std::make_unique<SubtractiveSynth>(16);
         ChannelId chId = rack->addChannel("Lead", std::move(synth), synthTrackId);

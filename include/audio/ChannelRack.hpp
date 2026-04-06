@@ -68,6 +68,17 @@ public:
     void sendMidiToChannel(ChannelId channelId, const MidiEvent& event);
     EffectInfo getChannelGeneratorInfo(ChannelId channelId);
 
+    void emitPatternToMidiForChannel(
+        const Pattern& pat,
+        ChannelId channelId,
+        MidiBuffer& out,
+        double tickStart,
+        double tickEnd,
+        double bpm,
+        double sampleRate,
+        int blockFrames
+    );
+
 private:
     std::vector<std::unique_ptr<Channel>> m_channels;
     std::unordered_map<PatternId, std::unique_ptr<Pattern>> m_patterns;

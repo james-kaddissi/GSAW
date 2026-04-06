@@ -3,6 +3,8 @@
 #include <algorithm>
 #include <cmath>
 
+using namespace gs::audio;
+
 Channel::Channel(ChannelId id, const std::string& name, std::unique_ptr<Generator> gen, int maxBlockSize, int channels)
     : m_id(id)
     , m_name(name)

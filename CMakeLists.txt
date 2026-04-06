@@ -1,6 +1,16 @@
 cmake_minimum_required(VERSION 3.20)
 project(GSAW LANGUAGES CXX)
 
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type" FORCE)
+endif()
+
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    add_compile_definitions(_DEBUG DEVELOPMENT)
+else()
+    add_compile_definitions(NDEBUG RELEASE)
+endif()
+
 if(MSVC)
     set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
 endif()
@@ -10,7 +20,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set(GS_ENGINE_ROOT "C:/Users/james/GSHub/gs-engine-shared")
+if(WIN32)
+    set(GS_ENGINE_ROOT "C:/Users/james/GSHub/gs-engine-shared")
+elseif(APPLE)
+    set(GS_ENGINE_ROOT "/Users/james/gs-engine-shared")
+else()
+    set(GS_ENGINE_ROOT "/home/james/gs-engine-shared")
+endif()
 
 add_subdirectory(${GS_ENGINE_ROOT} ${CMAKE_BINARY_DIR}/gs-engine-build)
 
@@ -38,10 +54,21 @@ target_include_directories(GSAW PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${GS_ENGINE_ROOT}/include
 )
-
-target_link_libraries(GSAW PRIVATE
-    GSEngine::GSEngine
-)
+if(WIN32)
+    target_link_libraries(GSAW PRIVATE
+        GSEngine::GSEngine
+    )
+elseif(APPLE)
+    target_link_libraries(GSAW PRIVATE
+        GSEngine::GSEngine
+        "-framework CoreMIDI"
+        "-framework CoreFoundation"
+    )
+else()
+    target_link_libraries(GSAW PRIVATE
+        GSEngine::GSEngine
+    )
+endif()
 
 if(WIN32)
     add_custom_target(copy_mydaw_runtime_deps ALL
