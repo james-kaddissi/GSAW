@@ -359,7 +359,6 @@ private:
         return "Lane " + std::to_string(static_cast<int>(m_lanes.size()) + 1);
     }
 
-private:
     ArrangementId m_id = kInvalidArrangementId;
     std::string m_name;
     int m_lengthTicks = kDefaultArrangementPPQN * 64;

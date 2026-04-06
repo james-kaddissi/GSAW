@@ -169,9 +169,17 @@ public:
         mainContent->flexGrow = 1.0f;
         mainContent->heightMode = gs::ui::core::UISizeMode::Fill;
 
+        auto bottomBar = ui::HStack()
+            .height(10)
+            .pad(0)
+            .build();
+
+        bottomBar->crossAxisAlignment = gs::ui::core::UICrossAxisAlignment::Stretch;
+
         auto root = ui::VStack().spacing(4).pad(0)
             .add(titlebar)
             .add(mainContent)
+            .add(bottomBar)
             .build();
 
         root->crossAxisAlignment = gs::ui::core::UICrossAxisAlignment::Stretch;
@@ -183,8 +191,7 @@ public:
         ctx.requestRender();
     }
 
-    void onEvent(gs::core::Application::AppContext& ctx,
-                 const gs::core::Application::AppEvent& e) override {
+    void onEvent(gs::core::Application::AppContext& ctx, const gs::core::Application::AppEvent& e) override {
         if (e.type == gs::core::Application::AppEvent::Type::Resize)
             ctx.requestRender();
     }
