@@ -65,9 +65,13 @@ elseif(APPLE)
         "-framework CoreFoundation"
     )
 else()
+    find_package(PkgConfig REQUIRED)
+    pkg_check_modules(ALSA REQUIRED alsa)
     target_link_libraries(GSAW PRIVATE
         GSEngine::GSEngine
+        ${ALSA_LIBRARIES}
     )
+    target_include_directories(GSAW PRIVATE ${ALSA_INCLUDE_DIRS})
 endif()
 
 if(WIN32)
