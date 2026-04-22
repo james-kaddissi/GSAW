@@ -194,14 +194,28 @@ public:
     leftColumn->crossAxisAlignment = gs::ui::UICrossAxisAlignment::Stretch;
     leftColumn->heightMode = gs::ui::UISizeMode::Fill;
 
-    auto mainContent =
-        ui::HStack().spacing(4).pad(0).add(leftColumn).add(rightColumn).build();
-    mainContent->crossAxisAlignment = gs::ui::UICrossAxisAlignment::Stretch;
-    mainContent->flexGrow = 1.0f;
-    mainContent->heightMode = gs::ui::UISizeMode::Fill;
+        auto mainContent = ui::HStack()
+            .spacing(4)
+            .pad(0)
+            .add(leftColumn)
+            .add(rightColumn)
+            .build();
+        mainContent->crossAxisAlignment = gs::ui::core::UICrossAxisAlignment::Stretch;
+        mainContent->flexGrow = 1.0f;
+        mainContent->heightMode = gs::ui::core::UISizeMode::Fill;
 
-    auto root =
-        ui::VStack().spacing(4).pad(0).add(titlebar).add(mainContent).build();
+        auto bottomBar = ui::HStack()
+            .height(10)
+            .pad(0)
+            .build();
+
+        bottomBar->crossAxisAlignment = gs::ui::core::UICrossAxisAlignment::Stretch;
+
+        auto root = ui::VStack().spacing(4).pad(0)
+            .add(titlebar)
+            .add(mainContent)
+            .add(bottomBar)
+            .build();
 
     root->crossAxisAlignment = gs::ui::UICrossAxisAlignment::Stretch;
 
