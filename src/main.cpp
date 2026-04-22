@@ -200,16 +200,16 @@ public:
             .add(leftColumn)
             .add(rightColumn)
             .build();
-        mainContent->crossAxisAlignment = gs::ui::core::UICrossAxisAlignment::Stretch;
+        mainContent->crossAxisAlignment = gs::ui::UICrossAxisAlignment::Stretch;
         mainContent->flexGrow = 1.0f;
-        mainContent->heightMode = gs::ui::core::UISizeMode::Fill;
+        mainContent->heightMode = gs::ui::UISizeMode::Fill;
 
         auto bottomBar = ui::HStack()
             .height(10)
             .pad(0)
             .build();
 
-        bottomBar->crossAxisAlignment = gs::ui::core::UICrossAxisAlignment::Stretch;
+        bottomBar->crossAxisAlignment = gs::ui::UICrossAxisAlignment::Stretch;
 
         auto root = ui::VStack().spacing(4).pad(0)
             .add(titlebar)
