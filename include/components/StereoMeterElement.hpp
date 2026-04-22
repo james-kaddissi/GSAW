@@ -29,20 +29,20 @@ struct StereoMeterConfig {
     float emissiveRedBoost = 1.0f;
     bool emissivePeakHold = true;
 
-    gs::ui::core::UIColor bgColor {0.33f, 0.33f, 0.33f, 1.0f};
-    gs::ui::core::UIColor barBgColor {0.10f, 0.10f, 0.10f, 1.0f};
-    gs::ui::core::UIColor greenColor {0.15f, 0.75f, 0.30f, 1.0f};
-    gs::ui::core::UIColor yellowColor {0.85f, 0.80f, 0.15f, 1.0f};
-    gs::ui::core::UIColor redColor {0.90f, 0.20f, 0.15f, 1.0f};
-    gs::ui::core::UIColor peakLineColor {1.00f, 1.00f, 1.00f, 0.90f};
-    gs::ui::core::UIColor labelColor {0.55f, 0.55f, 0.55f, 1.0f};
-    gs::ui::core::UIColor readoutColor {0.75f, 0.75f, 0.75f, 1.0f};
-    gs::ui::core::UIColor scaleColor {0.35f, 0.35f, 0.35f, 1.0f};
+    gs::ui::UIColor bgColor {0.33f, 0.33f, 0.33f, 1.0f};
+    gs::ui::UIColor barBgColor {0.10f, 0.10f, 0.10f, 1.0f};
+    gs::ui::UIColor greenColor {0.15f, 0.75f, 0.30f, 1.0f};
+    gs::ui::UIColor yellowColor {0.85f, 0.80f, 0.15f, 1.0f};
+    gs::ui::UIColor redColor {0.90f, 0.20f, 0.15f, 1.0f};
+    gs::ui::UIColor peakLineColor {1.00f, 1.00f, 1.00f, 0.90f};
+    gs::ui::UIColor labelColor {0.55f, 0.55f, 0.55f, 1.0f};
+    gs::ui::UIColor readoutColor {0.75f, 0.75f, 0.75f, 1.0f};
+    gs::ui::UIColor scaleColor {0.35f, 0.35f, 0.35f, 1.0f};
 
-    gs::ui::core::UIGradient buildMeterGradient() const;
+    gs::ui::UIGradient buildMeterGradient() const;
 };
 
-class StereoMeterElement final : public gs::ui::core::UIElement {
+class StereoMeterElement final : public gs::ui::UIElement {
 public:
     explicit StereoMeterElement(StereoMeterConfig cfg = {});
 
@@ -53,21 +53,21 @@ public:
 
     void rebuildGradient();
 
-    gs::ui::core::UISize measure(const gs::ui::core::UISize& available) override;
-    void emit(gs::ui::core::UICanvas& canvas) override;
+    gs::ui::UISize measure(const gs::ui::UISize& available) override;
+    void emit(gs::ui::UICanvas& canvas) override;
 
 private:
     float dbToNorm(float db) const;
     float computeEmissive(float db) const;
 
-    void emitBar(gs::ui::core::UICanvas& canvas,
+    void emitBar(gs::ui::UICanvas& canvas,
                  float barX,
                  float barTop,
                  float barH,
                  float db,
                  bool emissive = true) const;
 
-    void emitPeakLine(gs::ui::core::UICanvas& canvas,
+    void emitPeakLine(gs::ui::UICanvas& canvas,
                       float barX,
                       float barTop,
                       float barH,
@@ -77,7 +77,7 @@ private:
 
 private:
     StereoMeterConfig m_cfg;
-    gs::ui::core::UIGradient m_meterGradient;
+    gs::ui::UIGradient m_meterGradient;
     const LevelMeter* m_meter = nullptr;
 
     float m_peakHoldDb[2] = {-96.0f, -96.0f};

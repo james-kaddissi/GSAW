@@ -38,8 +38,8 @@ ChannelRackView::ChannelRackView(AudioEngine* engine, ChannelRack* rack, Channel
     : m_engine(engine)
     , m_rack(rack)
     , m_cfg(std::move(cfg))
-    , m_root(gs::ui::widgets::UIStackPanel::create(gs::ui::core::UIOrientation::Vertical)) {
-    m_root->onBeforeEmit = [this](gs::ui::core::UICanvas&) {
+    , m_root(gs::ui::widgets::UIStackPanel::create(gs::ui::UIOrientation::Vertical)) {
+    m_root->onBeforeEmit = [this](gs::ui::UICanvas&) {
         if (needsRebuild()) {
             rebuild();
         } else {
@@ -96,7 +96,7 @@ void ChannelRackView::rebuild() {
     m_lastFocusedId = m_rack->getFocusedChannelId();
     m_channelUi.clear();
 
-    std::vector<std::shared_ptr<gs::ui::core::UIElement>> floaters;
+    std::vector<std::shared_ptr<gs::ui::UIElement>> floaters;
     for (auto& c : m_root->children) {
         if (c && c->floating) {
             floaters.push_back(c);
@@ -105,10 +105,10 @@ void ChannelRackView::rebuild() {
 
     m_root->children.clear();
     m_root->spacing = 2.0f;
-    m_root->padding = gs::ui::core::UIThickness(m_cfg.sectionPad);
+    m_root->padding = gs::ui::UIThickness(m_cfg.sectionPad);
     m_root->fill = m_cfg.bg;
-    m_root->widthMode = gs::ui::core::UISizeMode::Fill;
-    m_root->heightMode = gs::ui::core::UISizeMode::Flex;
+    m_root->widthMode = gs::ui::UISizeMode::Fill;
+    m_root->heightMode = gs::ui::UISizeMode::Flex;
     m_root->flexGrow = 1.0f;
 
     m_root->add(buildTransportBar());
@@ -122,8 +122,8 @@ void ChannelRackView::rebuild() {
     scroll->scrollbarThumbHover = m_cfg.scrollThumbHover;
     scroll->scrollbarThumbDrag = m_cfg.scrollThumbDrag;
     scroll->scrollSpeed = 40.0f;
-    scroll->widthMode = gs::ui::core::UISizeMode::Fill;
-    scroll->heightMode = gs::ui::core::UISizeMode::Flex;
+    scroll->widthMode = gs::ui::UISizeMode::Fill;
+    scroll->heightMode = gs::ui::UISizeMode::Flex;
     scroll->flexGrow = 1.0f;
     scroll->preferredHeight = 0.0f; 
 
@@ -143,14 +143,14 @@ void ChannelRackView::rebuild() {
     }
 }
 
-std::shared_ptr<gs::ui::core::UIElement> ChannelRackView::buildTransportBar() {
+std::shared_ptr<gs::ui::UIElement> ChannelRackView::buildTransportBar() {
     namespace ui = gs::ui;
     ChannelRack* rack = m_rack;
 
     auto bar = ui::HStack()
         .spacing(6)
         .height(m_cfg.transportHeight)
-        .crossAlign(gs::ui::core::UICrossAxisAlignment::Center);
+        .crossAlign(gs::ui::UICrossAxisAlignment::Center);
 
     bar.add(
         ui::Button("Play")
@@ -200,7 +200,7 @@ std::shared_ptr<gs::ui::core::UIElement> ChannelRackView::buildTransportBar() {
     return bar.build();
 }
 
-std::shared_ptr<gs::ui::core::UIElement> ChannelRackView::buildChannelRow(Channel* ch, bool alt) {
+std::shared_ptr<gs::ui::UIElement> ChannelRackView::buildChannelRow(Channel* ch, bool alt) {
     namespace ui = gs::ui;
 
     ChannelId chId = ch->getId();
@@ -211,7 +211,7 @@ std::shared_ptr<gs::ui::core::UIElement> ChannelRackView::buildChannelRow(Channe
     auto row = ui::HStack()
         .spacing(4)
         .height(m_cfg.rowHeight)
-        .crossAlign(gs::ui::core::UICrossAxisAlignment::Center);
+        .crossAlign(gs::ui::UICrossAxisAlignment::Center);
 
     auto rowPanel = row.build();
     rowPanel->fill = alt ? m_cfg.rowBgAlt : m_cfg.rowBg;
@@ -408,7 +408,7 @@ std::shared_ptr<gs::ui::core::UIElement> ChannelRackView::buildChannelRow(Channe
     return rowPanel;
 }
 
-std::shared_ptr<gs::ui::core::UIElement> ChannelRackView::buildAddChannelRow() {
+std::shared_ptr<gs::ui::UIElement> ChannelRackView::buildAddChannelRow() {
     namespace ui = gs::ui;
     ChannelRack* rack = m_rack;
     AudioEngine* engine = m_engine;
@@ -480,7 +480,7 @@ void ChannelRackView::openGeneratorEditor(ChannelId chId) {
         .spacing(4)
         .height(m_cfg.editorHandleH)
         .pad(4, 2, 4, 2)
-        .crossAlign(gs::ui::core::UICrossAxisAlignment::Center)
+        .crossAlign(gs::ui::UICrossAxisAlignment::Center)
         .add(
             ui::Text(title)
                 .size(m_cfg.fontSize)

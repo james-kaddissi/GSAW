@@ -5,7 +5,7 @@
 #include <audio/core/AudioTypes.hpp>
 #include <audio/core/Track.hpp>
 #include <audio/dsp/generators/Generator.hpp>
-#include <audio/dsp/generators/BaseGenerator.hpp>
+#include <audio/dsp/generators/GeneratorBase.hpp>
 
 #include <atomic>
 #include <cstdint>

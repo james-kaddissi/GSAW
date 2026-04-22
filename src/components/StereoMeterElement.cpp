@@ -2,11 +2,11 @@
 
 #include <algorithm>
 
-gs::ui::core::UIGradient StereoMeterConfig::buildMeterGradient() const {
+gs::ui::UIGradient StereoMeterConfig::buildMeterGradient() const {
     float normYellow = (yellowDb - dbMin) / (dbMax - dbMin);
     float normRed = (redDb - dbMin) / (dbMax - dbMin);
 
-    return gs::ui::core::UIGradient::build(gs::ui::core::UIGradientDirection::Vertical)
+    return gs::ui::UIGradient::build(gs::ui::UIGradientDirection::Vertical)
         .stop(0.0f, redColor)
         .stop(1.0f - normRed, redColor)
         .stop(1.0f - normRed, yellowColor)
@@ -20,8 +20,8 @@ StereoMeterElement::StereoMeterElement(StereoMeterConfig cfg)
     : m_cfg(std::move(cfg)) {
     preferredWidth = m_cfg.width;
     preferredHeight = m_cfg.height;
-    widthMode = gs::ui::core::UISizeMode::Fixed;
-    heightMode = gs::ui::core::UISizeMode::Fixed;
+    widthMode = gs::ui::UISizeMode::Fixed;
+    heightMode = gs::ui::UISizeMode::Fixed;
     m_meterGradient = m_cfg.buildMeterGradient();
 }
 
@@ -41,12 +41,12 @@ void StereoMeterElement::rebuildGradient() {
     m_meterGradient = m_cfg.buildMeterGradient();
 }
 
-gs::ui::core::UISize StereoMeterElement::measure(const gs::ui::core::UISize& /*available*/) {
+gs::ui::UISize StereoMeterElement::measure(const gs::ui::UISize& /*available*/) {
     desired = {m_cfg.width, m_cfg.height};
     return desired;
 }
 
-void StereoMeterElement::emit(gs::ui::core::UICanvas& canvas) {
+void StereoMeterElement::emit(gs::ui::UICanvas& canvas) {
     if (!visible) return;
 
     const float x = arranged.x;
@@ -54,7 +54,7 @@ void StereoMeterElement::emit(gs::ui::core::UICanvas& canvas) {
     const float w = arranged.width;
     const float h = arranged.height;
 
-    gs::ui::core::emitFilledRect(canvas, {x, y, w, h}, m_cfg.bgColor, 2.0f);
+    gs::ui::emitFilledRect(canvas, {x, y, w, h}, m_cfg.bgColor, 2.0f);
 
     if (!m_meter) return;
 
@@ -78,14 +78,14 @@ void StereoMeterElement::emit(gs::ui::core::UICanvas& canvas) {
 
     if (barH <= 0.0f) return;
 
-    gs::ui::core::emitFilledRect(
+    gs::ui::emitFilledRect(
         canvas,
         {leftBarX, barTop, m_cfg.barWidth, barH},
         m_cfg.barBgColor,
         1.0f
     );
 
-    gs::ui::core::emitFilledRect(
+    gs::ui::emitFilledRect(
         canvas,
         {rightBarX, barTop, m_cfg.barWidth, barH},
         m_cfg.barBgColor,
@@ -122,7 +122,7 @@ float StereoMeterElement::computeEmissive(float db) const {
     return base;
 }
 
-void StereoMeterElement::emitBar(gs::ui::core::UICanvas& canvas,
+void StereoMeterElement::emitBar(gs::ui::UICanvas& canvas,
                                  float barX,
                                  float barTop,
                                  float barH,
@@ -135,8 +135,8 @@ void StereoMeterElement::emitBar(gs::ui::core::UICanvas& canvas,
     float filledTop = barTop + barH - filledH;
 
     {
-        gs::ui::core::UINode scissorPush{};
-        scissorPush.type = gs::ui::core::UINodeType::ScissorPush;
+        gs::ui::UINode scissorPush{};
+        scissorPush.type = gs::ui::UINodeType::ScissorPush;
         scissorPush.x = barX;
         scissorPush.y = filledTop;
         scissorPush.rectWidth = m_cfg.barWidth;
@@ -145,8 +145,8 @@ void StereoMeterElement::emitBar(gs::ui::core::UICanvas& canvas,
     }
 
     {
-        gs::ui::core::UINode node{};
-        node.type = gs::ui::core::UINodeType::GradientRect;
+        gs::ui::UINode node{};
+        node.type = gs::ui::UINodeType::GradientRect;
         node.x = barX;
         node.y = barTop;
         node.rectWidth = m_cfg.barWidth;
@@ -158,13 +158,13 @@ void StereoMeterElement::emitBar(gs::ui::core::UICanvas& canvas,
     }
 
     {
-        gs::ui::core::UINode scissorPop{};
-        scissorPop.type = gs::ui::core::UINodeType::ScissorPop;
+        gs::ui::UINode scissorPop{};
+        scissorPop.type = gs::ui::UINodeType::ScissorPop;
         canvas.nodes.push_back(scissorPop);
     }
 }
 
-void StereoMeterElement::emitPeakLine(gs::ui::core::UICanvas& canvas,
+void StereoMeterElement::emitPeakLine(gs::ui::UICanvas& canvas,
                                       float barX,
                                       float barTop,
                                       float barH,
@@ -174,8 +174,8 @@ void StereoMeterElement::emitPeakLine(gs::ui::core::UICanvas& canvas,
     float norm = dbToNorm(peakDb);
     float lineY = barTop + barH * (1.0f - norm);
 
-    gs::ui::core::UINode node{};
-    node.type = gs::ui::core::UINodeType::FilledRect;
+    gs::ui::UINode node{};
+    node.type = gs::ui::UINodeType::FilledRect;
     node.x = barX;
     node.y = lineY - m_cfg.peakHoldWidth * 0.5f;
     node.rectWidth = m_cfg.barWidth;

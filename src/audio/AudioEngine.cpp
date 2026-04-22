@@ -5,6 +5,7 @@
 #include <audio/dsp/generators/VST3Generator.hpp>
 #include <audio/dsp/BuiltInProcessor.hpp>
 #include <audio/dsp/VST3Processor.hpp>
+#include <logger/Logger.hpp>
 
 #include <algorithm>
 #include <cmath>

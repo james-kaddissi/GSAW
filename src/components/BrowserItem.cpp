@@ -2,36 +2,36 @@
 
 #include <cmath>
 
-BrowserItem::BrowserItem(const std::string& label, gs::ui::core::DragPayload payload, float fontSize, gs::ui::core::UIColor textColor, gs::ui::core::UIColor hoverColor)
+BrowserItem::BrowserItem(const std::string& label, gs::ui::DragPayload payload, float fontSize, gs::ui::UIColor textColor, gs::ui::UIColor hoverColor)
     : m_label(label)
     , m_payload(std::move(payload))
     , m_fontSize(fontSize)
     , m_textColor(textColor)
     , m_hoverColor(hoverColor)
 {
-    heightMode = gs::ui::core::UISizeMode::Fixed;
+    heightMode = gs::ui::UISizeMode::Fixed;
     preferredHeight = fontSize + 6.0f;
 }
 
-gs::ui::core::UISize BrowserItem::measure(const gs::ui::core::UISize& available) {
+gs::ui::UISize BrowserItem::measure(const gs::ui::UISize& available) {
     float w = available.width;
     float h = preferredHeight;
     desired = {w, h};
     return desired;
 }
 
-void BrowserItem::arrange(const gs::ui::core::UIRect& finalRect) {
+void BrowserItem::arrange(const gs::ui::UIRect& finalRect) {
     arranged = finalRect;
 }
 
-void BrowserItem::emit(gs::ui::core::UICanvas& canvas) {
+void BrowserItem::emit(gs::ui::UICanvas& canvas) {
     if (!visible) return;
 
     emitBackground(canvas);
     bool hovered = hasState(gs::ui::style::StyleStates::Hovered);
     if (hovered) {
-        gs::ui::core::UINode bg{};
-        bg.type = gs::ui::core::UINodeType::FilledRect;
+        gs::ui::UINode bg{};
+        bg.type = gs::ui::UINodeType::FilledRect;
         bg.x = arranged.x;
         bg.y = arranged.y;
         bg.rectWidth = arranged.width;
@@ -62,12 +62,12 @@ bool BrowserItem::onMouseMove(float x, float y) {
         float dy = y - m_downY;
         if (std::sqrt(dx * dx + dy * dy) > 4.0f) {
             m_dragging = true;
-            gs::ui::core::DragOverlay::get().beginDrag(m_payload, m_downX, m_downY);
+            gs::ui::DragOverlay::get().beginDrag(m_payload, m_downX, m_downY);
         }
     }
 
     if (m_dragging) {
-        gs::ui::core::DragOverlay::get().updatePosition(x, y);
+        gs::ui::DragOverlay::get().updatePosition(x, y);
         requestRender();
         return true;
     }
@@ -111,6 +111,6 @@ const std::string& BrowserItem::label() const {
     return m_label;
 }
 
-const gs::ui::core::DragPayload& BrowserItem::dragPayload() const {
+const gs::ui::DragPayload& BrowserItem::dragPayload() const {
     return m_payload;
 }

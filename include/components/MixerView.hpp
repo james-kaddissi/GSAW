@@ -32,36 +32,36 @@ struct MixerViewConfig {
     float stripRadius = 0.0f;
     float stripBorderThickness = 1.0f;
 
-    gs::ui::core::UIColor stripBg {0.43f, 0.43f, 0.43f, 1.0f};
-    gs::ui::core::UIColor stripBorderColor {0.0f, 0.0f, 0.0f, 1.0f};
-    gs::ui::core::UIColor masterStripBg {0.14f, 0.12f, 0.16f, 1.0f};
-    gs::ui::core::UIColor headerColor {1.0f,  1.0f,  1.0f,  1.0f};
-    gs::ui::core::UIColor labelColor {0.7f,  0.7f,  0.7f,  1.0f};
-    gs::ui::core::UIColor dimColor {0.4f,  0.4f,  0.4f,  1.0f};
+    gs::ui::UIColor stripBg {0.43f, 0.43f, 0.43f, 1.0f};
+    gs::ui::UIColor stripBorderColor {0.0f, 0.0f, 0.0f, 1.0f};
+    gs::ui::UIColor masterStripBg {0.14f, 0.12f, 0.16f, 1.0f};
+    gs::ui::UIColor headerColor {1.0f,  1.0f,  1.0f,  1.0f};
+    gs::ui::UIColor labelColor {0.7f,  0.7f,  0.7f,  1.0f};
+    gs::ui::UIColor dimColor {0.4f,  0.4f,  0.4f,  1.0f};
 
-    gs::ui::core::UIColor btnNormal {0.25f, 0.25f, 0.3f,  1.0f};
-    gs::ui::core::UIColor btnHover {0.35f, 0.35f, 0.4f,  1.0f};
-    gs::ui::core::UIColor btnPress {0.18f, 0.18f, 0.22f, 1.0f};
+    gs::ui::UIColor btnNormal {0.25f, 0.25f, 0.3f,  1.0f};
+    gs::ui::UIColor btnHover {0.35f, 0.35f, 0.4f,  1.0f};
+    gs::ui::UIColor btnPress {0.18f, 0.18f, 0.22f, 1.0f};
 
-    gs::ui::core::UIColor muteActive {0.8f,  0.3f,  0.3f,  1.0f};
-    gs::ui::core::UIColor soloActive {0.9f,  0.8f,  0.2f,  1.0f};
+    gs::ui::UIColor muteActive {0.8f,  0.3f,  0.3f,  1.0f};
+    gs::ui::UIColor soloActive {0.9f,  0.8f,  0.2f,  1.0f};
 
-    gs::ui::core::UIColor addBtnNormal {0.2f,  0.4f,  0.3f,  1.0f};
-    gs::ui::core::UIColor addBtnHover {0.3f,  0.5f,  0.4f,  1.0f};
-    gs::ui::core::UIColor addBtnPress {0.15f, 0.3f,  0.2f,  1.0f};
+    gs::ui::UIColor addBtnNormal {0.2f,  0.4f,  0.3f,  1.0f};
+    gs::ui::UIColor addBtnHover {0.3f,  0.5f,  0.4f,  1.0f};
+    gs::ui::UIColor addBtnPress {0.15f, 0.3f,  0.2f,  1.0f};
 
-    gs::ui::core::UIColor removeBtnNorm {0.5f,  0.2f,  0.2f,  1.0f};
-    gs::ui::core::UIColor removeBtnHov {0.7f,  0.3f,  0.3f,  1.0f};
-    gs::ui::core::UIColor removeBtnPress {0.4f,  0.15f, 0.15f, 1.0f};
+    gs::ui::UIColor removeBtnNorm {0.5f,  0.2f,  0.2f,  1.0f};
+    gs::ui::UIColor removeBtnHov {0.7f,  0.3f,  0.3f,  1.0f};
+    gs::ui::UIColor removeBtnPress {0.4f,  0.15f, 0.15f, 1.0f};
 
-    gs::ui::core::UIColor editBtnNormal {0.25f, 0.3f,  0.45f, 1.0f};
-    gs::ui::core::UIColor editBtnHover {0.35f, 0.4f,  0.55f, 1.0f};
-    gs::ui::core::UIColor editBtnPress {0.18f, 0.22f, 0.35f, 1.0f};
+    gs::ui::UIColor editBtnNormal {0.25f, 0.3f,  0.45f, 1.0f};
+    gs::ui::UIColor editBtnHover {0.35f, 0.4f,  0.55f, 1.0f};
+    gs::ui::UIColor editBtnPress {0.18f, 0.22f, 0.35f, 1.0f};
 
-    gs::ui::core::UIColor scrollTrackColor {0.15f, 0.15f, 0.15f, 0.5f};
-    gs::ui::core::UIColor scrollThumbColor {0.4f,  0.4f,  0.4f,  0.7f};
-    gs::ui::core::UIColor scrollThumbHover {0.55f, 0.55f, 0.55f, 0.9f};
-    gs::ui::core::UIColor scrollThumbDrag {0.65f, 0.65f, 0.65f, 1.0f};
+    gs::ui::UIColor scrollTrackColor {0.15f, 0.15f, 0.15f, 0.5f};
+    gs::ui::UIColor scrollThumbColor {0.4f,  0.4f,  0.4f,  0.7f};
+    gs::ui::UIColor scrollThumbHover {0.55f, 0.55f, 0.55f, 0.9f};
+    gs::ui::UIColor scrollThumbDrag {0.65f, 0.65f, 0.65f, 1.0f};
 
     float headerFontSize = 14.0f;
     float labelFontSize = 11.0f;
@@ -96,12 +96,12 @@ struct MixerViewConfig {
     float editorOffsetY = 80.0f;
     float editorStagger = 24.0f;
     float editorHandleH = 28.0f;
-    gs::ui::core::UIColor editorBg {0.12f, 0.12f, 0.14f, 0.97f};
-    gs::ui::core::UIColor editorBorder {0.35f, 0.35f, 0.4f,  1.0f};
-    gs::ui::core::UIColor editorHandleBg {0.18f, 0.18f, 0.22f, 1.0f};
-    gs::ui::core::UIColor closeBtnNormal {0.5f,  0.2f,  0.2f,  1.0f};
-    gs::ui::core::UIColor closeBtnHover {0.7f,  0.3f,  0.3f,  1.0f};
-    gs::ui::core::UIColor closeBtnPress {0.4f,  0.15f, 0.15f, 1.0f};
+    gs::ui::UIColor editorBg {0.12f, 0.12f, 0.14f, 0.97f};
+    gs::ui::UIColor editorBorder {0.35f, 0.35f, 0.4f,  1.0f};
+    gs::ui::UIColor editorHandleBg {0.18f, 0.18f, 0.22f, 1.0f};
+    gs::ui::UIColor closeBtnNormal {0.5f,  0.2f,  0.2f,  1.0f};
+    gs::ui::UIColor closeBtnHover {0.7f,  0.3f,  0.3f,  1.0f};
+    gs::ui::UIColor closeBtnPress {0.4f,  0.15f, 0.15f, 1.0f};
 };
 
 class MixerView {
@@ -127,14 +127,14 @@ private:
 
     static int inputSourceToIndex(const InputSource& src);
 
-    std::shared_ptr<gs::ui::core::UIElement> buildTrackStrip(Track* track);
-    std::shared_ptr<gs::ui::core::UIElement> buildFxRow(const ChainItemView& item, AudioChain* chain, int index, int total);
+    std::shared_ptr<gs::ui::UIElement> buildTrackStrip(Track* track);
+    std::shared_ptr<gs::ui::UIElement> buildFxRow(const ChainItemView& item, AudioChain* chain, int index, int total);
     void openEditor(uint64_t nodeId);
     void closeEditor(uint64_t nodeId);
     void cleanupStaleEditors();
     AudioProcessor* findNodeAnywhere(uint64_t nodeId) const;
-    std::shared_ptr<gs::ui::core::UIElement> buildBusStrip(Bus* bus, const std::string& label);
-    std::shared_ptr<gs::ui::core::UIElement> buildAddTrackStrip();
+    std::shared_ptr<gs::ui::UIElement> buildBusStrip(Bus* bus, const std::string& label);
+    std::shared_ptr<gs::ui::UIElement> buildAddTrackStrip();
 
     struct TrackUiEntry {
         std::shared_ptr<gs::ui::widgets::UIButtonElement> muteBtn;
@@ -142,7 +142,7 @@ private:
     };
 
     struct EditorEntry {
-        std::shared_ptr<gs::ui::core::UIElement> widget;
+        std::shared_ptr<gs::ui::UIElement> widget;
         std::shared_ptr<EffectStrip> strip;
     };
 

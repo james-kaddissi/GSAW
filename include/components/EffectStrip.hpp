@@ -16,8 +16,8 @@ struct EffectStripConfig {
     float cornerRadius = 8.0f;
     float borderThickness = 1.0f;
     float panelPadding = 12.0f;
-    gs::ui::core::UIColor panelBg {0.14f, 0.14f, 0.16f, 1.0f};
-    gs::ui::core::UIColor borderColor {0.3f,  0.3f,  0.35f, 1.0f};
+    gs::ui::UIColor panelBg {0.14f, 0.14f, 0.16f, 1.0f};
+    gs::ui::UIColor borderColor {0.3f,  0.3f,  0.35f, 1.0f};
 
     float rowSpacing = 6.0f;
     float headerSpacing = 8.0f;
@@ -29,18 +29,18 @@ struct EffectStripConfig {
 
     float valueLabelWidth = 120.0f;
     float valueFontSize = 12.0f;
-    gs::ui::core::UIColor valueColor {0.7f, 0.7f, 0.7f, 1.0f};
+    gs::ui::UIColor valueColor {0.7f, 0.7f, 0.7f, 1.0f};
 
     bool  showBypass = true;
     float bypassWidth = 80.0f;
     float bypassHeight = 28.0f;
 
     float titleFontSize = 20.0f;
-    gs::ui::core::UIColor titleColor {1.0f, 1.0f, 1.0f, 1.0f};
+    gs::ui::UIColor titleColor {1.0f, 1.0f, 1.0f, 1.0f};
 
-    gs::ui::core::UIColor bypassNormal {0.4f, 0.3f, 0.3f, 1.0f};
-    gs::ui::core::UIColor bypassHover {0.6f, 0.4f, 0.4f, 1.0f};
-    gs::ui::core::UIColor bypassPress {0.3f, 0.2f, 0.2f, 1.0f};
+    gs::ui::UIColor bypassNormal {0.4f, 0.3f, 0.3f, 1.0f};
+    gs::ui::UIColor bypassHover {0.6f, 0.4f, 0.4f, 1.0f};
+    gs::ui::UIColor bypassPress {0.3f, 0.2f, 0.2f, 1.0f};
 };
 
 class EffectStrip {

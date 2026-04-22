@@ -1,6 +1,6 @@
 #pragma once
 
-#include <audio/dsp/generators/BaseGenerator.hpp>
+#include <audio/dsp/generators/GeneratorBase.hpp>
 
 using gs::audio::Voice;
 using gs::audio::GeneratorBase;

@@ -19,7 +19,7 @@ EffectStrip::EffectStrip(EffectBinding binding, std::function<void(uint64_t)> by
     : m_binding(std::move(binding))
     , m_bypassFn(std::move(bypassFn))
     , m_cfg(std::move(cfg))
-    , m_root(gs::ui::widgets::UIStackPanel::create(gs::ui::core::UIOrientation::Vertical))
+    , m_root(gs::ui::widgets::UIStackPanel::create(gs::ui::UIOrientation::Vertical))
 {}
 
 std::shared_ptr<gs::ui::widgets::UIStackPanel> EffectStrip::widget() const {
@@ -39,7 +39,7 @@ void EffectStrip::build() {
 
     m_root->children.clear();
     m_root->spacing = m_cfg.rowSpacing;
-    m_root->padding = gs::ui::core::UIThickness(m_cfg.panelPadding);
+    m_root->padding = gs::ui::UIThickness(m_cfg.panelPadding);
 
     m_root->fill = m_cfg.panelBg;
     m_root->borderColor = m_cfg.borderColor;
@@ -48,11 +48,11 @@ void EffectStrip::build() {
 
     if (m_cfg.width > 0.0f) {
         m_root->preferredWidth = m_cfg.width;
-        m_root->widthMode = gs::ui::core::UISizeMode::Fill;
+        m_root->widthMode = gs::ui::UISizeMode::Fill;
     }
     if (m_cfg.height > 0.0f) {
         m_root->preferredHeight = m_cfg.height;
-        m_root->heightMode = gs::ui::core::UISizeMode::Fill;
+        m_root->heightMode = gs::ui::UISizeMode::Fill;
     }
 
     const auto& info = m_binding.info();
@@ -88,8 +88,8 @@ void EffectStrip::build() {
     auto headerRow = ui::HStack()
         .spacing(m_cfg.headerSpacing)
         .height(headerHeight)
-        .mainAlign(gs::ui::core::UIMainAxisAlignment::Center)
-        .crossAlign(gs::ui::core::UICrossAxisAlignment::Center)
+        .mainAlign(gs::ui::UIMainAxisAlignment::Center)
+        .crossAlign(gs::ui::UICrossAxisAlignment::Center)
         .add(title);
 
     if (m_cfg.showBypass) {
@@ -120,7 +120,7 @@ void EffectStrip::build() {
         if (m_cfg.valueLabelWidth > 0.0f) {
             std::shared_ptr<gs::ui::widgets::UITextElement> labelEl = valueLabel;
             labelEl->preferredWidth = m_cfg.valueLabelWidth;
-            labelEl->widthMode = gs::ui::core::UISizeMode::Fill;
+            labelEl->widthMode = gs::ui::UISizeMode::Fill;
         }
 
         std::string fmt = buildFormat(param);
@@ -131,7 +131,7 @@ void EffectStrip::build() {
         auto row = ui::HStack()
             .spacing(m_cfg.paramSpacing)
             .height(rowHeight)
-            .crossAlign(gs::ui::core::UICrossAxisAlignment::Center)
+            .crossAlign(gs::ui::UICrossAxisAlignment::Center)
             .add(slider)
             .add(valueLabel);
 

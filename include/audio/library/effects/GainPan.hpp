@@ -1,6 +1,6 @@
 #pragma once
 
-#include <audio/dsp/effects/BaseEffect.hpp>
+#include <audio/dsp/effects/EffectBase.hpp>
 
 class GainPan final : public gs::audio::EffectBase {
 public:

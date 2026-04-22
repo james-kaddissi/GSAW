@@ -21,14 +21,14 @@
 #include <commdlg.h>
 #endif
 
-class AudioLayer final : public gs::core::Layer::GLayer {
+class AudioLayer final : public gs::core::GLayer {
 public:
     void configure(EngineConfig config);
 
-    void onAttach(gs::core::Application::AppContext& ctx) override;
-    void onDetach(gs::core::Application::AppContext& ctx) override;
-    void onUpdate(gs::core::Application::AppContext& ctx, float dt) override;
-    void onRender(gs::core::Application::AppContext& ctx) override;
+    void onAttach(gs::core::AppContext& ctx) override;
+    void onDetach(gs::core::AppContext& ctx) override;
+    void onUpdate(gs::core::AppContext& ctx, float dt) override;
+    void onRender(gs::core::AppContext& ctx) override;
 
     bool isInitialized() const;
 

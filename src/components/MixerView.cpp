@@ -28,9 +28,9 @@ void MixerView::forceRebuild() {
 MixerView::MixerView(AudioEngine* engine, MixerViewConfig cfg)
     : m_engine(engine)
     , m_cfg(std::move(cfg))
-    , m_root(gs::ui::widgets::UIStackPanel::create(gs::ui::core::UIOrientation::Horizontal))
+    , m_root(gs::ui::widgets::UIStackPanel::create(gs::ui::UIOrientation::Horizontal))
 {
-    m_root->onBeforeEmit = [this](gs::ui::core::UICanvas&) {
+    m_root->onBeforeEmit = [this](gs::ui::UICanvas&) {
         if (needsRebuild()) rebuild();
         else syncStates();
     };
@@ -108,7 +108,7 @@ void MixerView::rebuild() {
     m_trackUi.clear();
     m_masterMuteBtn = nullptr;
 
-    std::vector<std::shared_ptr<gs::ui::core::UIElement>> floaters;
+    std::vector<std::shared_ptr<gs::ui::UIElement>> floaters;
     for (auto& c : m_root->children) {
         if (c && c->floating)
             floaters.push_back(c);
@@ -116,14 +116,14 @@ void MixerView::rebuild() {
 
     m_root->children.clear();
     m_root->spacing = 0.0f;
-    m_root->padding = gs::ui::core::UIThickness(0);
+    m_root->padding = gs::ui::UIThickness(0);
 
-    m_root->widthMode = gs::ui::core::UISizeMode::Fill;
-    m_root->heightMode = gs::ui::core::UISizeMode::Fill;
+    m_root->widthMode = gs::ui::UISizeMode::Fill;
+    m_root->heightMode = gs::ui::UISizeMode::Fill;
 
     auto trackScroll = gs::ui::widgets::UIScrollArea::create(gs::ui::widgets::UIScrollDirection::Horizontal);
 
-    trackScroll->contentOrientation = gs::ui::core::UIOrientation::Horizontal;
+    trackScroll->contentOrientation = gs::ui::UIOrientation::Horizontal;
     trackScroll->m_childSpacing = m_cfg.stripSpacing;
     trackScroll->scrollbarWidth = 8.0f;
     trackScroll->scrollbarMinThumb = 30.0f;
@@ -133,10 +133,10 @@ void MixerView::rebuild() {
     trackScroll->scrollbarThumbDrag = m_cfg.scrollThumbDrag;
     trackScroll->scrollSpeed = 60.0f;
 
-    trackScroll->widthMode = gs::ui::core::UISizeMode::Flex;
+    trackScroll->widthMode = gs::ui::UISizeMode::Flex;
     trackScroll->preferredWidth = 0.0f;
     trackScroll->flexGrow = 1.0f;
-    trackScroll->heightMode = gs::ui::core::UISizeMode::Fill;
+    trackScroll->heightMode = gs::ui::UISizeMode::Fill;
     trackScroll->preferredHeight = 0.0f;
 
     auto trackIds = m_engine->getTrackIds();
@@ -167,7 +167,7 @@ int MixerView::inputSourceToIndex(const InputSource& src) {
     }
 }
 
-std::shared_ptr<gs::ui::core::UIElement> MixerView::buildTrackStrip(Track* track) {
+std::shared_ptr<gs::ui::UIElement> MixerView::buildTrackStrip(Track* track) {
     namespace ui = gs::ui;
 
     TrackId trackId = track->getId();
@@ -175,15 +175,15 @@ std::shared_ptr<gs::ui::core::UIElement> MixerView::buildTrackStrip(Track* track
 
     auto stripScroll = gs::ui::widgets::UIScrollArea::create(gs::ui::widgets::UIScrollDirection::Vertical);
     stripScroll->flexContent = true;
-    stripScroll->heightMode = gs::ui::core::UISizeMode::Fill;
-    stripScroll->widthMode = gs::ui::core::UISizeMode::Fixed;
+    stripScroll->heightMode = gs::ui::UISizeMode::Fill;
+    stripScroll->widthMode = gs::ui::UISizeMode::Fixed;
     stripScroll->preferredWidth = m_cfg.stripWidth;
     stripScroll->m_childSpacing = m_cfg.sectionSpacing;
     stripScroll->fill = m_cfg.stripBg;
     stripScroll->cornerRadius = m_cfg.stripRadius;
     stripScroll->borderColor = m_cfg.stripBorderColor;
     stripScroll->borderThickness = m_cfg.stripBorderThickness;
-    stripScroll->padding = gs::ui::core::UIThickness(m_cfg.stripPadding);
+    stripScroll->padding = gs::ui::UIThickness(m_cfg.stripPadding);
     stripScroll->scrollbarWidth = m_cfg.fxScrollbarWidth;
     stripScroll->scrollbarMinThumb = 20.0f;
     stripScroll->scrollbarTrackColor = m_cfg.scrollTrackColor;
@@ -206,8 +206,8 @@ std::shared_ptr<gs::ui::core::UIElement> MixerView::buildTrackStrip(Track* track
 
     stripScroll->add(ui::HStack()
         .height(m_cfg.titleRowHeight)
-        .mainAlign(gs::ui::core::UIMainAxisAlignment::SpaceBetween)
-        .crossAlign(gs::ui::core::UICrossAxisAlignment::Center)
+        .mainAlign(gs::ui::UIMainAxisAlignment::SpaceBetween)
+        .crossAlign(gs::ui::UICrossAxisAlignment::Center)
         .add(nameLabel)
         .add(removeBtn)
         .build());
@@ -254,8 +254,8 @@ std::shared_ptr<gs::ui::core::UIElement> MixerView::buildTrackStrip(Track* track
     fxScroll->scrollbarThumbDrag = m_cfg.scrollThumbDrag;
     fxScroll->scrollSpeed = 30.0f;
 
-    fxScroll->widthMode = gs::ui::core::UISizeMode::Fill;
-    fxScroll->heightMode = gs::ui::core::UISizeMode::Fixed;
+    fxScroll->widthMode = gs::ui::UISizeMode::Fill;
+    fxScroll->heightMode = gs::ui::UISizeMode::Fixed;
     fxScroll->preferredWidth = m_cfg.stripWidth - m_cfg.stripPadding * 2;
     fxScroll->preferredHeight = m_cfg.fxScrollMinHeight;
     fxScroll->flexGrow = 1.0f;
@@ -373,7 +373,7 @@ std::shared_ptr<gs::ui::core::UIElement> MixerView::buildTrackStrip(Track* track
     return stripScroll;
 }
 
-std::shared_ptr<gs::ui::core::UIElement> MixerView::buildFxRow(
+std::shared_ptr<gs::ui::UIElement> MixerView::buildFxRow(
     const ChainItemView& item, AudioChain* chain, int index, int total)
 {
     namespace ui = gs::ui;
@@ -434,7 +434,7 @@ std::shared_ptr<gs::ui::core::UIElement> MixerView::buildFxRow(
     return ui::HStack()
         .spacing(0)
         .height(m_cfg.fxRowHeight)
-        .crossAlign(gs::ui::core::UICrossAxisAlignment::Center)
+        .crossAlign(gs::ui::UICrossAxisAlignment::Center)
         .add(bypBtn)
         .add(editBtn)
         .add(nameLabel)
@@ -499,7 +499,7 @@ void MixerView::openEditor(uint64_t nodeId) {
         .spacing(4)
         .height(m_cfg.editorHandleH)
         .pad(4, 2, 4, 2)
-        .crossAlign(gs::ui::core::UICrossAxisAlignment::Center)
+        .crossAlign(gs::ui::UICrossAxisAlignment::Center)
         .add(ui::Text(title)
             .size(m_cfg.labelFontSize)
             .color(m_cfg.headerColor))
@@ -581,7 +581,7 @@ AudioProcessor* MixerView::findNodeAnywhere(uint64_t nodeId) const {
     return nullptr;
 }
 
-std::shared_ptr<gs::ui::core::UIElement> MixerView::buildBusStrip(Bus* bus, const std::string& label) {
+std::shared_ptr<gs::ui::UIElement> MixerView::buildBusStrip(Bus* bus, const std::string& label) {
     namespace ui = gs::ui;
 
     BusId busId = bus->getId();
@@ -589,15 +589,15 @@ std::shared_ptr<gs::ui::core::UIElement> MixerView::buildBusStrip(Bus* bus, cons
 
     auto stripScroll = gs::ui::widgets::UIScrollArea::create(gs::ui::widgets::UIScrollDirection::Vertical);
     stripScroll->flexContent = true;
-    stripScroll->heightMode = gs::ui::core::UISizeMode::Fill;
-    stripScroll->widthMode = gs::ui::core::UISizeMode::Fixed;
+    stripScroll->heightMode = gs::ui::UISizeMode::Fill;
+    stripScroll->widthMode = gs::ui::UISizeMode::Fixed;
     stripScroll->preferredWidth = m_cfg.busWidth;
     stripScroll->m_childSpacing = m_cfg.sectionSpacing;
     stripScroll->fill = m_cfg.masterStripBg;
     stripScroll->cornerRadius = m_cfg.stripRadius;
     stripScroll->borderColor = m_cfg.stripBorderColor;
     stripScroll->borderThickness = m_cfg.stripBorderThickness;
-    stripScroll->padding = gs::ui::core::UIThickness(m_cfg.stripPadding);
+    stripScroll->padding = gs::ui::UIThickness(m_cfg.stripPadding);
     stripScroll->scrollbarWidth = m_cfg.fxScrollbarWidth;
     stripScroll->scrollbarMinThumb = 20.0f;
     stripScroll->scrollbarTrackColor = m_cfg.scrollTrackColor;
@@ -631,8 +631,8 @@ std::shared_ptr<gs::ui::core::UIElement> MixerView::buildBusStrip(Bus* bus, cons
     fxScroll->scrollbarThumbHover = m_cfg.scrollThumbHover;
     fxScroll->scrollbarThumbDrag = m_cfg.scrollThumbDrag;
     fxScroll->scrollSpeed = 30.0f;
-    fxScroll->widthMode = gs::ui::core::UISizeMode::Fill;
-    fxScroll->heightMode = gs::ui::core::UISizeMode::Fixed;
+    fxScroll->widthMode = gs::ui::UISizeMode::Fill;
+    fxScroll->heightMode = gs::ui::UISizeMode::Fixed;
     fxScroll->preferredWidth = m_cfg.busWidth - m_cfg.stripPadding * 2;
     fxScroll->preferredHeight = m_cfg.fxScrollMinHeight;
     fxScroll->flexGrow = 1.0f;
@@ -694,21 +694,21 @@ std::shared_ptr<gs::ui::core::UIElement> MixerView::buildBusStrip(Bus* bus, cons
     return stripScroll;
 }
 
-std::shared_ptr<gs::ui::core::UIElement> MixerView::buildAddTrackStrip() {
+std::shared_ptr<gs::ui::UIElement> MixerView::buildAddTrackStrip() {
     namespace ui = gs::ui;
     AudioEngine* engine = m_engine;
 
     auto stripScroll = gs::ui::widgets::UIScrollArea::create(gs::ui::widgets::UIScrollDirection::Vertical);
     stripScroll->flexContent = true;
-    stripScroll->heightMode = gs::ui::core::UISizeMode::Fill;
-    stripScroll->widthMode = gs::ui::core::UISizeMode::Fixed;
+    stripScroll->heightMode = gs::ui::UISizeMode::Fill;
+    stripScroll->widthMode = gs::ui::UISizeMode::Fixed;
     stripScroll->preferredWidth = m_cfg.stripWidth;
     stripScroll->m_childSpacing = m_cfg.sectionSpacing;
     stripScroll->fill = {0.1f, 0.1f, 0.1f, 0.6f};
     stripScroll->cornerRadius = m_cfg.stripRadius;
     stripScroll->borderColor = m_cfg.stripBorderColor;
     stripScroll->borderThickness = m_cfg.stripBorderThickness;
-    stripScroll->padding = gs::ui::core::UIThickness(m_cfg.stripPadding);
+    stripScroll->padding = gs::ui::UIThickness(m_cfg.stripPadding);
     stripScroll->scrollbarWidth = m_cfg.fxScrollbarWidth;
     stripScroll->scrollbarMinThumb = 20.0f;
     stripScroll->scrollbarTrackColor = m_cfg.scrollTrackColor;
@@ -718,10 +718,10 @@ std::shared_ptr<gs::ui::core::UIElement> MixerView::buildAddTrackStrip() {
     stripScroll->scrollSpeed = 40.0f;
     auto centered = ui::VStack()
         .spacing(m_cfg.sectionSpacing)
-        .mainAlign(gs::ui::core::UIMainAxisAlignment::Center)
-        .crossAlign(gs::ui::core::UICrossAxisAlignment::Center)
-        .widthMode(gs::ui::core::UISizeMode::Fill)
-        .heightMode(gs::ui::core::UISizeMode::Fill)
+        .mainAlign(gs::ui::UIMainAxisAlignment::Center)
+        .crossAlign(gs::ui::UICrossAxisAlignment::Center)
+        .widthMode(gs::ui::UISizeMode::Fill)
+        .heightMode(gs::ui::UISizeMode::Fill)
         .add(ui::Text("+ New Track")
             .fitText()
             .color(m_cfg.addBtnNormal)

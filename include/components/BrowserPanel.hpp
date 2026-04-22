@@ -32,14 +32,14 @@ struct BrowserPanelConfig {
     float buttonHeight = 22.0f;
     float sectionSpacing = 6.0f;
 
-    gs::ui::core::UIColor panelBg = {0.10f, 0.10f, 0.12f, 1.0f};
-    gs::ui::core::UIColor sectionColor = {0.5f,  0.7f,  1.0f,  1.0f};
-    gs::ui::core::UIColor itemColor = {0.70f, 0.70f, 0.70f, 1.0f};
-    gs::ui::core::UIColor itemHoverColor = {0.95f, 0.95f, 0.95f, 1.0f};
-    gs::ui::core::UIColor typeSuffixColor = {0.45f, 0.45f, 0.50f, 1.0f};
-    gs::ui::core::UIColor btnNormal = {0.20f, 0.25f, 0.30f, 1.0f};
-    gs::ui::core::UIColor btnHover = {0.30f, 0.35f, 0.40f, 1.0f};
-    gs::ui::core::UIColor btnPress = {0.15f, 0.18f, 0.22f, 1.0f};
+    gs::ui::UIColor panelBg = {0.10f, 0.10f, 0.12f, 1.0f};
+    gs::ui::UIColor sectionColor = {0.5f,  0.7f,  1.0f,  1.0f};
+    gs::ui::UIColor itemColor = {0.70f, 0.70f, 0.70f, 1.0f};
+    gs::ui::UIColor itemHoverColor = {0.95f, 0.95f, 0.95f, 1.0f};
+    gs::ui::UIColor typeSuffixColor = {0.45f, 0.45f, 0.50f, 1.0f};
+    gs::ui::UIColor btnNormal = {0.20f, 0.25f, 0.30f, 1.0f};
+    gs::ui::UIColor btnHover = {0.30f, 0.35f, 0.40f, 1.0f};
+    gs::ui::UIColor btnPress = {0.15f, 0.18f, 0.22f, 1.0f};
 };
 
 class BrowserPanel {
@@ -66,11 +66,11 @@ public:
 
     const std::vector<BrowserEntry>& entries() const { return m_entries; }
 
-    std::shared_ptr<gs::ui::core::UIElement> widget() const { return m_root; }
+    std::shared_ptr<gs::ui::UIElement> widget() const { return m_root; }
 
     void rebuild();
 
-    void handleDrop(gs::ui::core::DragPayload payload);
+    void handleDrop(gs::ui::DragPayload payload);
 
 private:
     BrowserPanel() = default;
@@ -80,7 +80,7 @@ private:
 
     static std::string formatEntry(const BrowserEntry& e);
 
-    static gs::ui::core::DragPayload makePayload(const BrowserEntry& e);
+    static gs::ui::DragPayload makePayload(const BrowserEntry& e);
 
     PlatformWindowHandle m_owner = nullptr;
     ProbeFn m_probeFn;

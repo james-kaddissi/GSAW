@@ -4,13 +4,13 @@ void AudioLayer::configure(EngineConfig config) {
     m_config = std::move(config);
 }
 
-void AudioLayer::onAttach(gs::core::Application::AppContext& ctx) {
+void AudioLayer::onAttach(gs::core::AppContext& ctx) {
     (void)ctx;
     m_engine = std::make_unique<AudioEngine>();
     m_initialized = m_engine->initialize(m_config);
 }
 
-void AudioLayer::onDetach(gs::core::Application::AppContext& ctx) {
+void AudioLayer::onDetach(gs::core::AppContext& ctx) {
     (void)ctx;
     if (m_engine) {
         m_engine->shutdown();
@@ -19,7 +19,7 @@ void AudioLayer::onDetach(gs::core::Application::AppContext& ctx) {
     m_initialized = false;
 }
 
-void AudioLayer::onUpdate(gs::core::Application::AppContext& ctx, float dt) {
+void AudioLayer::onUpdate(gs::core::AppContext& ctx, float dt) {
     (void)dt;
     if (!m_initialized) return;
 
@@ -34,7 +34,7 @@ void AudioLayer::onUpdate(gs::core::Application::AppContext& ctx, float dt) {
     }
 }
 
-void AudioLayer::onRender(gs::core::Application::AppContext& ctx) {
+void AudioLayer::onRender(gs::core::AppContext& ctx) {
     (void)ctx;
 }
 

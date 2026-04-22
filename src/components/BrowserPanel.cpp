@@ -17,8 +17,8 @@
 #endif
 
 namespace ui = gs::ui;
-using gs::ui::core::DragPayload;
-using gs::ui::core::UIColor;
+using gs::ui::DragPayload;
+using gs::ui::UIColor;
 
 std::shared_ptr<BrowserPanel> BrowserPanel::create(
     PlatformWindowHandle owner,
@@ -34,12 +34,12 @@ std::shared_ptr<BrowserPanel> BrowserPanel::create(
     bp->m_pickFileFn = std::move(pickFileFn);
     bp->m_cfg = cfg;
 
-    bp->m_root = gs::ui::widgets::UIStackPanel::create(gs::ui::core::UIOrientation::Vertical);
+    bp->m_root = gs::ui::widgets::UIStackPanel::create(gs::ui::UIOrientation::Vertical);
     bp->m_root->spacing = 0.0f;
     bp->m_root->fill = cfg.panelBg;
     bp->m_root->preferredWidth = cfg.width;
-    bp->m_root->widthMode = gs::ui::core::UISizeMode::Fixed;
-    bp->m_root->heightMode = gs::ui::core::UISizeMode::Fill;
+    bp->m_root->widthMode = gs::ui::UISizeMode::Fixed;
+    bp->m_root->heightMode = gs::ui::UISizeMode::Fill;
     bp->m_root->cornerRadius = 4.0f;
     bp->m_root->borderColor = {0.25f, 0.25f, 0.30f, 1.0f};
     bp->m_root->borderThickness = 1.0f;
@@ -255,7 +255,7 @@ void BrowserPanel::rebuild() {
         .spacing(4)
         .height(m_cfg.buttonHeight + 8.0f)
         .pad(6, 4, 6, 4)
-        .crossAlign(gs::ui::core::UICrossAxisAlignment::Center)
+        .crossAlign(gs::ui::UICrossAxisAlignment::Center)
         .add(ui::Button("+ Sample")
             .size(m_cfg.fontSize)
             .width(80).height(m_cfg.buttonHeight)
