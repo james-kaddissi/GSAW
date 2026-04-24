@@ -1,0 +1,14 @@
+BasedOnStyle: Microsoft
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never
+ColumnLimit: 120
+BinPackParameters: true
+BinPackArguments: true
+
+AllowAllParametersOfDeclarationOnNextLine: false
+AllowAllArgumentsOnNextLine: false
+
+PenaltyBreakBeforeFirstCallParameter: 1000
+
+AlwaysBreakAfterReturnType: None

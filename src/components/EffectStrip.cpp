@@ -19,10 +19,10 @@ EffectStrip::EffectStrip(EffectBinding binding, std::function<void(uint64_t)> by
     : m_binding(std::move(binding))
     , m_bypassFn(std::move(bypassFn))
     , m_cfg(std::move(cfg))
-    , m_root(gs::ui::widgets::UIStackPanel::create(gs::ui::UIOrientation::Vertical))
+    , m_root(gs::ui::UIStackPanel::create(gs::ui::UIOrientation::Vertical))
 {}
 
-std::shared_ptr<gs::ui::widgets::UIStackPanel> EffectStrip::widget() const {
+std::shared_ptr<gs::ui::UIStackPanel> EffectStrip::widget() const {
     return m_root;
 }
 
@@ -118,7 +118,7 @@ void EffectStrip::build() {
             .height(rowHeight);
 
         if (m_cfg.valueLabelWidth > 0.0f) {
-            std::shared_ptr<gs::ui::widgets::UITextElement> labelEl = valueLabel;
+            std::shared_ptr<gs::ui::UITextElement> labelEl = valueLabel;
             labelEl->preferredWidth = m_cfg.valueLabelWidth;
             labelEl->widthMode = gs::ui::UISizeMode::Fill;
         }

@@ -9,7 +9,7 @@ std::shared_ptr<MixerView> MixerView::create(AudioEngine* engine, MixerViewConfi
     return p;
 }
 
-std::shared_ptr<gs::ui::widgets::UIStackPanel> MixerView::widget() const {
+std::shared_ptr<gs::ui::UIStackPanel> MixerView::widget() const {
     return m_root;
 }
 
@@ -28,7 +28,7 @@ void MixerView::forceRebuild() {
 MixerView::MixerView(AudioEngine* engine, MixerViewConfig cfg)
     : m_engine(engine)
     , m_cfg(std::move(cfg))
-    , m_root(gs::ui::widgets::UIStackPanel::create(gs::ui::UIOrientation::Horizontal))
+    , m_root(gs::ui::UIStackPanel::create(gs::ui::UIOrientation::Horizontal))
 {
     m_root->onBeforeEmit = [this](gs::ui::UICanvas&) {
         if (needsRebuild()) rebuild();
@@ -121,7 +121,7 @@ void MixerView::rebuild() {
     m_root->widthMode = gs::ui::UISizeMode::Fill;
     m_root->heightMode = gs::ui::UISizeMode::Fill;
 
-    auto trackScroll = gs::ui::widgets::UIScrollArea::create(gs::ui::widgets::UIScrollDirection::Horizontal);
+    auto trackScroll = gs::ui::UIScrollArea::create(gs::ui::UIScrollDirection::Horizontal);
 
     trackScroll->contentOrientation = gs::ui::UIOrientation::Horizontal;
     trackScroll->m_childSpacing = m_cfg.stripSpacing;
@@ -173,7 +173,7 @@ std::shared_ptr<gs::ui::UIElement> MixerView::buildTrackStrip(Track* track) {
     TrackId trackId = track->getId();
     AudioEngine* engine = m_engine;
 
-    auto stripScroll = gs::ui::widgets::UIScrollArea::create(gs::ui::widgets::UIScrollDirection::Vertical);
+    auto stripScroll = gs::ui::UIScrollArea::create(gs::ui::UIScrollDirection::Vertical);
     stripScroll->flexContent = true;
     stripScroll->heightMode = gs::ui::UISizeMode::Fill;
     stripScroll->widthMode = gs::ui::UISizeMode::Fixed;
@@ -243,7 +243,7 @@ std::shared_ptr<gs::ui::UIElement> MixerView::buildTrackStrip(Track* track) {
     auto fxItems = track->getInsertChain().getView();
     AudioChain* chain = &track->getInsertChain();
 
-    auto fxScroll = gs::ui::widgets::UIScrollArea::create(gs::ui::widgets::UIScrollDirection::Vertical);
+    auto fxScroll = gs::ui::UIScrollArea::create(gs::ui::UIScrollDirection::Vertical);
 
     fxScroll->m_childSpacing = 1.0f;
     fxScroll->scrollbarWidth = m_cfg.fxScrollbarWidth;
@@ -343,7 +343,7 @@ std::shared_ptr<gs::ui::UIElement> MixerView::buildTrackStrip(Track* track) {
         .size(m_cfg.buttonFontSize)
         .width(m_cfg.buttonWidth).height(m_cfg.buttonHeight)
         .colors(m_cfg.btnNormal, m_cfg.btnHover, m_cfg.btnPress)
-        .style(StyleStates::Muted, gs::ui::style::StyleOverrides::Fill(m_cfg.muteActive))
+        .style(StyleStates::Muted, gs::ui::StyleOverrides::Fill(m_cfg.muteActive))
         .onClick([engine, trackId]() {
             auto* t = engine->getTrack(trackId);
             if (t) t->setMute(!t->isMuted());
@@ -356,7 +356,7 @@ std::shared_ptr<gs::ui::UIElement> MixerView::buildTrackStrip(Track* track) {
         .size(m_cfg.buttonFontSize)
         .width(m_cfg.buttonWidth).height(m_cfg.buttonHeight)
         .colors(m_cfg.btnNormal, m_cfg.btnHover, m_cfg.btnPress)
-        .style(StyleStates::Solo, gs::ui::style::StyleOverrides::Fill(m_cfg.soloActive))
+        .style(StyleStates::Solo, gs::ui::StyleOverrides::Fill(m_cfg.soloActive))
         .onClick([engine, trackId]() {
             auto* t = engine->getTrack(trackId);
             if (t) t->setSolo(!t->isSoloed());
@@ -587,7 +587,7 @@ std::shared_ptr<gs::ui::UIElement> MixerView::buildBusStrip(Bus* bus, const std:
     BusId busId = bus->getId();
     AudioEngine* engine = m_engine;
 
-    auto stripScroll = gs::ui::widgets::UIScrollArea::create(gs::ui::widgets::UIScrollDirection::Vertical);
+    auto stripScroll = gs::ui::UIScrollArea::create(gs::ui::UIScrollDirection::Vertical);
     stripScroll->flexContent = true;
     stripScroll->heightMode = gs::ui::UISizeMode::Fill;
     stripScroll->widthMode = gs::ui::UISizeMode::Fixed;
@@ -621,7 +621,7 @@ std::shared_ptr<gs::ui::UIElement> MixerView::buildBusStrip(Bus* bus, const std:
     auto fxItems = bus->getInsertChain().getView();
     AudioChain* chain = &bus->getInsertChain();
 
-    auto fxScroll = gs::ui::widgets::UIScrollArea::create(gs::ui::widgets::UIScrollDirection::Vertical);
+    auto fxScroll = gs::ui::UIScrollArea::create(gs::ui::UIScrollDirection::Vertical);
 
     fxScroll->m_childSpacing = 1.0f;
     fxScroll->scrollbarWidth = m_cfg.fxScrollbarWidth;
@@ -680,7 +680,7 @@ std::shared_ptr<gs::ui::UIElement> MixerView::buildBusStrip(Bus* bus, const std:
         .size(m_cfg.buttonFontSize)
         .width(m_cfg.buttonWidth).height(m_cfg.buttonHeight)
         .colors(m_cfg.btnNormal, m_cfg.btnHover, m_cfg.btnPress)
-        .style(StyleStates::Muted, gs::ui::style::StyleOverrides::Fill(m_cfg.muteActive))
+        .style(StyleStates::Muted, gs::ui::StyleOverrides::Fill(m_cfg.muteActive))
         .onClick([engine, busId]() {
             auto* b = engine->getBus(busId);
             if (b) b->setMute(!b->isMuted());
@@ -698,7 +698,7 @@ std::shared_ptr<gs::ui::UIElement> MixerView::buildAddTrackStrip() {
     namespace ui = gs::ui;
     AudioEngine* engine = m_engine;
 
-    auto stripScroll = gs::ui::widgets::UIScrollArea::create(gs::ui::widgets::UIScrollDirection::Vertical);
+    auto stripScroll = gs::ui::UIScrollArea::create(gs::ui::UIScrollDirection::Vertical);
     stripScroll->flexContent = true;
     stripScroll->heightMode = gs::ui::UISizeMode::Fill;
     stripScroll->widthMode = gs::ui::UISizeMode::Fixed;

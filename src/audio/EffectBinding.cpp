@@ -8,7 +8,7 @@ EffectBinding::EffectBinding(EffectInfo info)
     : m_info(std::move(info)) {
 }
 
-EffectBinding& EffectBinding::bind(const char* paramId, std::shared_ptr<gs::ui::widgets::UISliderElement> slider) {
+EffectBinding& EffectBinding::bind(const char* paramId, std::shared_ptr<gs::ui::UISliderElement> slider) {
     if (!slider) {
         return *this;
     }
@@ -31,7 +31,7 @@ EffectBinding& EffectBinding::bind(const char* paramId, std::shared_ptr<gs::ui::
     return *this;
 }
 
-EffectBinding& EffectBinding::bindValue(const char* paramId, std::shared_ptr<gs::ui::widgets::UITextElement> text, const char* fmt) {
+EffectBinding& EffectBinding::bindValue(const char* paramId, std::shared_ptr<gs::ui::UITextElement> text, const char* fmt) {
     if (!text) {
         return *this;
     }
@@ -44,7 +44,7 @@ EffectBinding& EffectBinding::bindValue(const char* paramId, std::shared_ptr<gs:
     updateValueText(text.get(), *handle, fmt);
 
     std::string fmtStr = fmt ? fmt : "";
-    std::weak_ptr<gs::ui::widgets::UITextElement> weakText = text;
+    std::weak_ptr<gs::ui::UITextElement> weakText = text;
     const char* label = handle->spec->label;
 
     for (auto& sb : m_sliderBindings) {
@@ -71,14 +71,14 @@ EffectBinding& EffectBinding::bindValue(const char* paramId, std::shared_ptr<gs:
     return *this;
 }
 
-EffectBinding& EffectBinding::bindTitle(std::shared_ptr<gs::ui::widgets::UITextElement> text) {
+EffectBinding& EffectBinding::bindTitle(std::shared_ptr<gs::ui::UITextElement> text) {
     if (text && m_info.name) {
         text->text = m_info.name;
     }
     return *this;
 }
 
-EffectBinding& EffectBinding::bindBypass(std::shared_ptr<gs::ui::widgets::UIButtonElement> button, std::function<void(uint64_t)> toggleFn) {
+EffectBinding& EffectBinding::bindBypass(std::shared_ptr<gs::ui::UIButtonElement> button, std::function<void(uint64_t)> toggleFn) {
     if (!button) {
         return *this;
     }
@@ -117,7 +117,7 @@ ParamHandle* EffectBinding::findParam(const char* id) {
     return nullptr;
 }
 
-void EffectBinding::updateValueText(gs::ui::widgets::UITextElement* text, const ParamHandle& handle, const char* fmt) {
+void EffectBinding::updateValueText(gs::ui::UITextElement* text, const ParamHandle& handle, const char* fmt) {
     char buf[128];
     float val = handle.get();
     if (fmt && fmt[0] != '\0') {

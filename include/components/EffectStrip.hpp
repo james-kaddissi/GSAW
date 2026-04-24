@@ -51,7 +51,7 @@ public:
         EffectStripConfig cfg = {}
     );
 
-    std::shared_ptr<gs::ui::widgets::UIStackPanel> widget() const;
+    std::shared_ptr<gs::ui::UIStackPanel> widget() const;
 
     const EffectBinding& binding() const;
     EffectStripConfig& config();
@@ -69,5 +69,5 @@ private:
     EffectBinding m_binding;
     std::function<void(uint64_t)> m_bypassFn;
     EffectStripConfig m_cfg;
-    std::shared_ptr<gs::ui::widgets::UIStackPanel> m_root;
+    std::shared_ptr<gs::ui::UIStackPanel> m_root;
 };

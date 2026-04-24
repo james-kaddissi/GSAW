@@ -28,7 +28,7 @@ void BrowserItem::emit(gs::ui::UICanvas& canvas) {
     if (!visible) return;
 
     emitBackground(canvas);
-    bool hovered = hasState(gs::ui::style::StyleStates::Hovered);
+    bool hovered = hasState(gs::ui::StyleStates::Hovered);
     if (hovered) {
         gs::ui::UINode bg{};
         bg.type = gs::ui::UINodeType::FilledRect;
@@ -52,9 +52,9 @@ void BrowserItem::emit(gs::ui::UICanvas& canvas) {
 }
 
 bool BrowserItem::onMouseMove(float x, float y) {
-    if (!hasState(gs::ui::style::StyleStates::Pressed)) {
-        if (arranged.contains(x, y)) addState(gs::ui::style::StyleStates::Hovered);
-        else removeState(gs::ui::style::StyleStates::Hovered);
+    if (!hasState(gs::ui::StyleStates::Pressed)) {
+        if (arranged.contains(x, y)) addState(gs::ui::StyleStates::Hovered);
+        else removeState(gs::ui::StyleStates::Hovered);
     }
 
     if (m_mouseDown && !m_dragging) {

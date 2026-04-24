@@ -18,7 +18,7 @@
 class SubtractiveSynth;
 class BagpipeSynth;
 
-namespace StyleStates = gs::ui::style::StyleStates;
+namespace StyleStates = gs::ui::StyleStates;
 
 struct ChannelRackViewConfig {
     float rowHeight = 36.0f;
@@ -96,7 +96,7 @@ public:
         ChannelRackViewConfig cfg = {}
     );
 
-    std::shared_ptr<gs::ui::widgets::UIStackPanel> widget() const;
+    std::shared_ptr<gs::ui::UIStackPanel> widget() const;
 
     ChannelRackViewConfig& config();
     const ChannelRackViewConfig& config() const;
@@ -105,9 +105,9 @@ public:
 
 private:
     struct ChannelUiEntry {
-        std::shared_ptr<gs::ui::widgets::UIButtonElement> muteBtn;
-        std::shared_ptr<gs::ui::widgets::UIButtonElement> armedBtn;
-        std::shared_ptr<gs::ui::widgets::UIStackPanel> rowPanel;
+        std::shared_ptr<gs::ui::UIButtonElement> muteBtn;
+        std::shared_ptr<gs::ui::UIButtonElement> armedBtn;
+        std::shared_ptr<gs::ui::UIStackPanel> rowPanel;
     };
 
     struct EditorEntry {
@@ -131,7 +131,7 @@ private:
     AudioEngine* m_engine;
     ChannelRack* m_rack;
     ChannelRackViewConfig m_cfg;
-    std::shared_ptr<gs::ui::widgets::UIStackPanel> m_root;
+    std::shared_ptr<gs::ui::UIStackPanel> m_root;
 
     int m_lastChannelCount = -1;
     ChannelId m_lastFocusedId = kInvalidChannelId;

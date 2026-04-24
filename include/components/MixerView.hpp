@@ -22,7 +22,7 @@
 
 using gs::audio::ChainItemView;
 
-namespace StyleStates = gs::ui::style::StyleStates;
+namespace StyleStates = gs::ui::StyleStates;
 
 struct MixerViewConfig {
     float stripWidth = 150.0f;
@@ -108,7 +108,7 @@ class MixerView {
 public:
     static std::shared_ptr<MixerView> create(AudioEngine* engine, MixerViewConfig cfg = {});
 
-    std::shared_ptr<gs::ui::widgets::UIStackPanel> widget() const;
+    std::shared_ptr<gs::ui::UIStackPanel> widget() const;
 
     MixerViewConfig&       config();
     const MixerViewConfig& config() const;
@@ -137,8 +137,8 @@ private:
     std::shared_ptr<gs::ui::UIElement> buildAddTrackStrip();
 
     struct TrackUiEntry {
-        std::shared_ptr<gs::ui::widgets::UIButtonElement> muteBtn;
-        std::shared_ptr<gs::ui::widgets::UIButtonElement> soloBtn;
+        std::shared_ptr<gs::ui::UIButtonElement> muteBtn;
+        std::shared_ptr<gs::ui::UIButtonElement> soloBtn;
     };
 
     struct EditorEntry {
@@ -148,14 +148,14 @@ private:
 
     AudioEngine* m_engine;
     MixerViewConfig m_cfg;
-    std::shared_ptr<gs::ui::widgets::UIStackPanel> m_root;
+    std::shared_ptr<gs::ui::UIStackPanel> m_root;
 
     int m_lastTrackCount = -1;
     std::vector<uint64_t> m_lastChainVersions;
     uint64_t m_lastMasterVersion = 0;
 
     std::unordered_map<TrackId, TrackUiEntry> m_trackUi;
-    std::shared_ptr<gs::ui::widgets::UIButtonElement> m_masterMuteBtn;
+    std::shared_ptr<gs::ui::UIButtonElement> m_masterMuteBtn;
 
     std::unordered_map<uint64_t, EffectInfo> m_effectInfoMap;
     std::unordered_map<uint64_t, EditorEntry> m_openEditors;

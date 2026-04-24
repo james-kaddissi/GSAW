@@ -18,7 +18,7 @@ std::shared_ptr<ChannelRackView> ChannelRackView::create(
     return p;
 }
 
-std::shared_ptr<gs::ui::widgets::UIStackPanel> ChannelRackView::widget() const {
+std::shared_ptr<gs::ui::UIStackPanel> ChannelRackView::widget() const {
     return m_root;
 }
 
@@ -38,7 +38,7 @@ ChannelRackView::ChannelRackView(AudioEngine* engine, ChannelRack* rack, Channel
     : m_engine(engine)
     , m_rack(rack)
     , m_cfg(std::move(cfg))
-    , m_root(gs::ui::widgets::UIStackPanel::create(gs::ui::UIOrientation::Vertical)) {
+    , m_root(gs::ui::UIStackPanel::create(gs::ui::UIOrientation::Vertical)) {
     m_root->onBeforeEmit = [this](gs::ui::UICanvas&) {
         if (needsRebuild()) {
             rebuild();
@@ -113,7 +113,7 @@ void ChannelRackView::rebuild() {
 
     m_root->add(buildTransportBar());
 
-    auto scroll = gs::ui::widgets::UIScrollArea::create(gs::ui::widgets::UIScrollDirection::Vertical);
+    auto scroll = gs::ui::UIScrollArea::create(gs::ui::UIScrollDirection::Vertical);
     scroll->m_childSpacing = m_cfg.rowSpacing;
     scroll->scrollbarWidth = 6.0f;
     scroll->scrollbarMinThumb = 12.0f;
@@ -218,7 +218,7 @@ std::shared_ptr<gs::ui::UIElement> ChannelRackView::buildChannelRow(Channel* ch,
 
     rowPanel->styles.set(
         StyleStates::Focused,
-        gs::ui::style::StyleOverrides::Border(m_cfg.focusBorder, m_cfg.focusBorderW)
+        gs::ui::StyleOverrides::Border(m_cfg.focusBorder, m_cfg.focusBorderW)
     );
 
     if (focused) {
@@ -234,7 +234,7 @@ std::shared_ptr<gs::ui::UIElement> ChannelRackView::buildChannelRow(Channel* ch,
         .width(m_cfg.buttonWidth)
         .height(m_cfg.rowHeight - 6)
         .colors(m_cfg.btnNormal, m_cfg.btnHover, m_cfg.btnPress)
-        .style(StyleStates::Muted, gs::ui::style::StyleOverrides::Fill(m_cfg.muteActive))
+        .style(StyleStates::Muted, gs::ui::StyleOverrides::Fill(m_cfg.muteActive))
         .onClick([rack, chId]() {
             auto* c = rack->getChannel(chId);
             if (c) {
@@ -254,7 +254,7 @@ std::shared_ptr<gs::ui::UIElement> ChannelRackView::buildChannelRow(Channel* ch,
         .width(m_cfg.buttonWidth)
         .height(m_cfg.rowHeight - 6)
         .colors(m_cfg.btnNormal, m_cfg.btnHover, m_cfg.btnPress)
-        .style(StyleStates::Armed, gs::ui::style::StyleOverrides::Fill(m_cfg.armedActive))
+        .style(StyleStates::Armed, gs::ui::StyleOverrides::Fill(m_cfg.armedActive))
         .onClick([rack, chId]() {
             auto* c = rack->getChannel(chId);
             if (c) {

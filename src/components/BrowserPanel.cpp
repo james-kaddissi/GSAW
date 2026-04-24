@@ -34,7 +34,7 @@ std::shared_ptr<BrowserPanel> BrowserPanel::create(
     bp->m_pickFileFn = std::move(pickFileFn);
     bp->m_cfg = cfg;
 
-    bp->m_root = gs::ui::widgets::UIStackPanel::create(gs::ui::UIOrientation::Vertical);
+    bp->m_root = gs::ui::UIStackPanel::create(gs::ui::UIOrientation::Vertical);
     bp->m_root->spacing = 0.0f;
     bp->m_root->fill = cfg.panelBg;
     bp->m_root->preferredWidth = cfg.width;

@@ -89,8 +89,8 @@ private:
 
     std::vector<BrowserEntry> m_entries;
 
-    std::shared_ptr<gs::ui::widgets::UIStackPanel> m_root;
-    std::shared_ptr<gs::ui::widgets::UIScrollArea> m_scrollBody;
+    std::shared_ptr<gs::ui::UIStackPanel> m_root;
+    std::shared_ptr<gs::ui::UIScrollArea> m_scrollBody;
 
     AudioEngine* m_engine = nullptr;
 };
